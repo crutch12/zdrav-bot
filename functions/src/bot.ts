@@ -17,15 +17,13 @@ const bot = new Telegraf(functions.config().telegram.token);
 
 bot.launch().then(() => {
   bot.telegram.setMyCommands(commands);
+  start(bot);
 });
 
-start(bot);
-
 // error handling
-// @ts-ignore
 bot.catch((err, ctx) => {
   functions.logger.error('[Bot] Error', err);
-  return ctx.reply(`Ooops, encountered an error for ${ctx.updateType}`, err);
+  ctx.reply(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
 // Enable graceful stop

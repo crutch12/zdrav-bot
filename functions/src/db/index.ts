@@ -3,7 +3,10 @@ import { Chat, Polis, Subscription } from '../lib/chat';
 import { AuthResult } from '../types/Auth';
 import * as functions from 'firebase-functions';
 
+const serviceAccount = require('../../serviceAccountKey.json');
+
 admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://zdrav-mosreg-test-default-rtdb.europe-west1.firebasedatabase.app',
 });
 
