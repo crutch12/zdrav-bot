@@ -4,7 +4,7 @@
     "lint": "eslint --fix --ext .js,.ts .",
     "build": "tsc",
     "build:dev": "tsc --watch",
-    "start": "micro"
+    "start": "micro -p ${PORT:-3000}"
   },
   "engines": {
     "node": "16"
