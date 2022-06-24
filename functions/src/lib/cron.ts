@@ -7,11 +7,11 @@ import * as functions from 'firebase-functions';
 import { getChats } from '../db';
 
 export const start = (bot: Telegraf) => {
-  return schedule('*/55 * * * * *', async () => {
-    // */5 * * * * * - every 5 sec
-    functions.logger.log('run cron every min');
-    // const chats = Chats.values();
+  return schedule('*/10 * * * *', async () => {
+    functions.logger.log('run cron every 10 min');
+
     const chats = await getChats();
+
     functions.logger.log('Chats', chats.length);
 
     for (const chat of chats) {
@@ -35,7 +35,7 @@ export const start = (bot: Telegraf) => {
           functions.logger.log('sumBefore/after', sumBefore, sumAfter);
 
           // Появились новые места для записи
-          if (sumAfter >= sumBefore) {
+          if (sumAfter > sumBefore) {
             const messages = getFollowMessages(schedules);
             await bot.telegram.sendMessage(chat.userId, `Появились новые места! Было ${sumBefore}, стало ${sumAfter}`);
             await Promise.all(messages.map((message) => bot.telegram.sendMessage(chat.userId, message)));
