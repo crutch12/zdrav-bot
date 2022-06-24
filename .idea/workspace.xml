@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0c7783d1-eb35-4fa2-a4c9-f139084726c6" name="Default Changelist" comment="" />
+    <list default="true" id="0c7783d1-eb35-4fa2-a4c9-f139084726c6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/zdrav-bot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/zdrav-bot.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/bot.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/bot.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/commands/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/commands/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/commands/message.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/commands/polis.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/commands/polis.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/commands/start.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/commands/start.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/db/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/db/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/lib/axios.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/lib/chat.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/lib/chat.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/services/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/services/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/services/departments.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/services/departments.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/services/doctors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/services/doctors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -9,6 +28,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1pTn0eCFQwZNhq0ZpHUh3JaOiK4" />
   <component name="ProjectViewState">
@@ -19,10 +46,35 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/functions/src/commands" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="C:\Users\criit\Documents\Bitbucket\zdrav-bot-test\functions\node_modules\typescript\lib" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="D:\Bitbucket\zdrav-bot-test\functions\node_modules\prettier" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
+    <property name="ts.external.directory.path" value="D:\Bitbucket\zdrav-bot-test\functions\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Bitbucket\zdrav-bot-test\functions\src\commands" />
+      <recent name="D:\Bitbucket\zdrav-bot-test\functions" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/functions/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -35,10 +87,26 @@
       <workItem from="1615215726480" duration="518000" />
       <workItem from="1615216433246" duration="9939000" />
       <workItem from="1615652995082" duration="6000" />
+      <workItem from="1656033645499" duration="26764000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
