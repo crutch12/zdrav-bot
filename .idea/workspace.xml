@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c7783d1-eb35-4fa2-a4c9-f139084726c6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/functions/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/functions/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +33,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="D:\Bitbucket\zdrav-bot-test\functions\node_modules\prettier" />
     <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
-    <property name="ts.external.directory.path" value="D:\Bitbucket\zdrav-bot-test\functions\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="D:\Bitbucket\zdrav-bot-test\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -42,6 +42,7 @@
       <recent name="D:\Bitbucket\zdrav-bot-test\functions" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Bitbucket\zdrav-bot-test" />
       <recent name="D:\Bitbucket\zdrav-bot-test\functions" />
     </key>
   </component>

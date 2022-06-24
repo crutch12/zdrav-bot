@@ -1,5 +1,5 @@
 {
-  "name": "functions",
+  "name": "zdrav-bot",
   "scripts": {
     "lint": "eslint --fix --ext .js,.ts .",
     "build": "tsc",
