@@ -1,6 +1,5 @@
 import { bot } from '../bot';
 import { Chat } from '../lib/chat';
-import * as functions from 'firebase-functions';
 import { getDoctors } from '../services/doctors';
 import _ from 'lodash';
 
@@ -29,7 +28,7 @@ export const initialize = () => {
       const chunks = _.chunk(messages, 5);
       return Promise.all(chunks.map((chunk) => ctx.reply(chunk.join('\n\n'))));
     } catch (err) {
-      functions.logger.error(err);
+      console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

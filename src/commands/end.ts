@@ -1,6 +1,5 @@
 import { bot } from '../bot';
 import { removeChat } from '../db';
-import * as functions from 'firebase-functions';
 
 export const command = 'end';
 export const description = 'Закончить (удалить все данные и подписки)';
@@ -11,7 +10,7 @@ export const initialize = () => {
       await removeChat(ctx.message.from.id);
       return ctx.reply('Все данные и подписки успешно удалены.');
     } catch (err) {
-      functions.logger.error(err);
+      console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

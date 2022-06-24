@@ -1,12 +1,15 @@
 import * as admin from 'firebase-admin';
 import { Chat, Polis, Subscription } from '../lib/chat';
 import { AuthResult } from '../types/Auth';
-import * as functions from 'firebase-functions';
+import dotenv from 'dotenv';
 
-const serviceAccount = require('../../serviceAccountKey.json');
+dotenv.config()
+
+const FIRE_STORE_ACCOUNT_KEY = process.env.FIRE_STORE_ACCOUNT_KEY
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(JSON.parse(FIRE_STORE_ACCOUNT_KEY)),
+  projectId: 'zdrav-mosreg-test',
   databaseURL: 'https://zdrav-mosreg-test-default-rtdb.europe-west1.firebasedatabase.app',
 });
 
@@ -54,7 +57,7 @@ export const updateChat = (
   chat: Chat,
   { polis, authResult }: { polis?: Polis | null; authResult?: AuthResult | null },
 ) => {
-  functions.logger.log(chat.userId);
+  console.info(chat.userId);
   const docRef = db.collection('chats').doc(`${chat.userId}`);
   if (typeof polis !== undefined) {
     chat.polis = polis;

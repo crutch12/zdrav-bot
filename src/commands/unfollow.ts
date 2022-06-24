@@ -1,5 +1,4 @@
 import { bot } from '../bot';
-import * as functions from 'firebase-functions';
 import { Chat } from '../lib/chat';
 
 export const command = 'unfollow';
@@ -33,7 +32,7 @@ export const initialize = () => {
         }, lpuCode: ${doctorsQuery.lpuCode}`,
       );
     } catch (err) {
-      functions.logger.error(err);
+      console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

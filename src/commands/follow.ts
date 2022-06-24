@@ -1,6 +1,5 @@
 import { bot } from '../bot';
 import { getDoctorsWithSchedule, getFollowMessages, getSchedules } from '../services/doctors';
-import * as functions from 'firebase-functions';
 import { Chat } from '../lib/chat';
 
 export const command = 'follow';
@@ -36,7 +35,7 @@ export const initialize = () => {
 
       return Promise.all(messages.map((message) => ctx.reply(message)));
     } catch (err) {
-      functions.logger.error(err);
+      console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

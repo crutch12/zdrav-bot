@@ -1,7 +1,6 @@
 import { bot } from '../bot';
 import { getDepartments } from '../services/departments';
 import { Chat } from '../lib/chat';
-import * as functions from 'firebase-functions';
 import _ from 'lodash';
 
 export const command = 'departments';
@@ -16,7 +15,7 @@ export const initialize = () => {
       const chunks = _.chunk(messages, 70);
       return Promise.all(chunks.map((chunk) => ctx.reply(chunk.join('\n'))));
     } catch (err) {
-      functions.logger.error(err);
+      console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

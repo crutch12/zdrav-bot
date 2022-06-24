@@ -8,12 +8,11 @@
 //   response.send("Hello from Firebase!");
 // });
 
-import * as functions from 'firebase-functions';
 import { Telegraf } from 'telegraf';
 import { commands } from './commands';
 import { start } from './lib/cron';
 
-const bot = new Telegraf(functions.config().telegram.token);
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
 bot.launch().then(() => {
   bot.telegram.setMyCommands(commands);
@@ -22,7 +21,7 @@ bot.launch().then(() => {
 
 // error handling
 bot.catch((err, ctx) => {
-  functions.logger.error('[Bot] Error', err);
+  console.error(err);
   ctx.reply(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
@@ -30,10 +29,4 @@ bot.catch((err, ctx) => {
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
-// handle all telegram updates with HTTPs trigger
-const echoBot = functions.https.onRequest(async (request, response) => {
-  functions.logger.log('Incoming message', request.body);
-  return await bot.handleUpdate(request.body, response);
-});
-
-export { echoBot, bot };
+export { bot };

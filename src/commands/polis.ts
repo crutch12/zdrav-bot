@@ -1,7 +1,6 @@
 import { bot } from '../bot';
 import { Chat, Polis } from '../lib/chat';
 import { authByPolis } from '../services/auth';
-import * as functions from 'firebase-functions';
 import { updateChat } from '../db';
 
 export const command = 'polis';
@@ -52,7 +51,7 @@ export const initialize = () => {
         ].join('\n'),
       );
     } catch (err) {
-      functions.logger.error(err);
+      console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });
