@@ -33,9 +33,9 @@ export const initialize = () => {
 
       await Promise.all(messages.map((message) => ctx.reply(message)));
 
-      const subscribtion = await chat.subscribeSchedules(schedules, doctorsQuery);
+      const subscription = await chat.subscribeSchedules(getSchedules(doctors, true), doctorsQuery);
 
-      await ctx.replyWithMarkdown(`Подписка *${subscribtion.id}* успешно создана`);
+      await ctx.replyWithMarkdown(`Подписка *${subscription.id}* успешно создана`);
 
       return ctx.replyWithMarkdown(StepMessages.unfollow(lpuCode, departmentId));
     } catch (err) {
