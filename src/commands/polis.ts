@@ -3,6 +3,7 @@ import { Chat, Polis } from '../lib/chat';
 import { authByPolis } from '../services/auth';
 import { updateChat } from '../db';
 import { StepMessages } from './start';
+import { parseCommandMessage } from '../utils';
 
 export const command = 'polis';
 export const description = 'Указать полис и дату рождения (для авторизации)';
@@ -11,7 +12,7 @@ export const initialize = () => {
   bot.command(command, async (ctx) => {
     const chat = await Chat.getByUserId(ctx.message.from.id);
 
-    const [polisRaw, birthday] = ctx.message.text.split(/\s+/).slice(1);
+    const [polisRaw, birthday] = parseCommandMessage(ctx.message.text);
 
     if (!polisRaw || !birthday) {
       return ctx.replyWithMarkdown('(Ошибка!) Необходимо ввести полис в формате\n: *5040200838017611 01.12.2000*');

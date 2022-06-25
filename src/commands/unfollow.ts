@@ -1,5 +1,6 @@
 import { bot } from '../bot';
 import { Chat } from '../lib/chat';
+import { parseCommandMessage } from '../utils';
 
 export const command = 'unfollow';
 export const description = 'Удалить созданную подписку';
@@ -12,7 +13,7 @@ export const initialize = () => {
       return ctx.reply(`Необходима авторизация (через полис)`);
     }
 
-    const [lpuCode, departmentId, doctorId] = ctx.message.text.split(/\s+/).slice(1);
+    const [lpuCode, departmentId, doctorId] = parseCommandMessage(ctx.message.text);
 
     if (!lpuCode || !departmentId) {
       return ctx.reply('(Ошибка!) Нужно указать КОД_БОЛЬНИЦЫ КОД_СПЕЦИАЛЬНОСТИ +ID_ДОКТОРА. См. /doctors');

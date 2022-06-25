@@ -3,6 +3,7 @@ import { Chat } from '../lib/chat';
 import { getDoctors } from '../services/doctors';
 import _ from 'lodash';
 import { StepMessages } from './start';
+import { parseCommandMessage } from '../utils';
 
 export const command = 'doctors';
 export const description = 'Посмотреть список врачей нужной специальности';
@@ -11,7 +12,7 @@ export const initialize = () => {
   bot.command(command, async (ctx) => {
     const chat = await Chat.getByUserId(ctx.message.from.id);
 
-    const [departmentId] = ctx.message.text.split(/\s+/).slice(1);
+    const [departmentId] = parseCommandMessage(ctx.message.text);
 
     if (!departmentId) {
       return ctx.reply('(Ошибка!) Нужно указать id специальности врача. См. /departments');
