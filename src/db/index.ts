@@ -49,25 +49,30 @@ export const getChat = async (userId) => {
       .then((snapshot) => snapshot.docs.map((x) => x.data()))) as Subscription[],
     polis: value && value.polis,
     authResult: value && value.authResult,
+    initialCookies: value && value.initialCookies,
   });
   return chat;
 };
 
 export const updateChat = (
   chat: Chat,
-  { polis, authResult }: { polis?: Polis | null; authResult?: AuthResult | null },
+  { polis, authResult, initialCookies }: { polis?: Polis | null; authResult?: AuthResult | null; initialCookies?: string[] | null },
 ) => {
   console.info(chat.userId);
   const docRef = db.collection('chats').doc(`${chat.userId}`);
-  if (typeof polis !== undefined) {
-    chat.polis = polis;
+  if (typeof polis !== 'undefined') {
+    chat.setPolis(polis);
   }
-  if (typeof authResult !== undefined) {
-    chat.authResult = authResult;
+  if (typeof authResult !== 'undefined') {
+    chat.setAuthResult(authResult);
+  }
+  if (typeof initialCookies !== 'undefined') {
+    chat.setInitialCookies(initialCookies);
   }
   return docRef.update({
     polis,
     authResult,
+    initialCookies,
   });
 };
 

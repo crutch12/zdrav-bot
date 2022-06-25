@@ -35,10 +35,12 @@ export const initialize = () => {
     ctx.reply('Начинаю аутентификацию на портале госуслуг...');
 
     try {
+      const initialCookies = await chat.getInitialSessionCookie();
       const authResult = await authByPolis(chat);
 
       await updateChat(chat, {
         authResult,
+        initialCookies,
       });
 
       const doctor = authResult.items!.doctor;

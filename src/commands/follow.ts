@@ -29,7 +29,7 @@ export const initialize = () => {
 
       const schedules = getSchedules(doctors);
 
-      await chat.setSchedules(schedules, doctorsQuery);
+      await chat.subscribeSchedules(schedules, doctorsQuery);
 
       const messages = getFollowMessages(schedules);
 

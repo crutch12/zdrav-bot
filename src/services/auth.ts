@@ -28,7 +28,7 @@ export const authByPolis = async (chat: Chat) => {
   );
 
   if (authResult.success) {
-    chat.authResult = authResult;
+    chat.setAuthResult(authResult);
     return authResult;
   }
 
