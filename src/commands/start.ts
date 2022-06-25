@@ -47,6 +47,7 @@ export const START_MESSAGE = [
   '5) Готово. Можно подписаться сразу на несколько больниц + специальностей\n',
   `${StepMessages.unfollow(Mocks.lpuCode, Mocks.departmentId)}\n`,
   'Помощь: */help*',
+  'Список активных подписок: */list*',
   'Удалить введённые данные и подписки: */end*',
 ].join('\n');
 
