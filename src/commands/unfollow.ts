@@ -21,13 +21,9 @@ export const initialize = () => {
     const doctorsQuery = { departmentId, lpuCode, doctorId };
 
     try {
-      await chat.removeSubscription(doctorsQuery);
+      const subscription = await chat.removeSubscription(doctorsQuery);
 
-      return ctx.reply(
-        `Произошла отписка от doctorId: ${doctorsQuery.doctorId || '--'}, departmentId: ${
-          doctorsQuery.departmentId
-        }, lpuCode: ${doctorsQuery.lpuCode}`,
-      );
+      return ctx.reply(`Подписка ${subscription.id} успешно удалена`);
     } catch (err) {
       console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);

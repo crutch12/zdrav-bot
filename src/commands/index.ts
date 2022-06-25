@@ -6,6 +6,7 @@ import * as doctors from './doctors';
 import * as unfollow from './unfollow';
 import * as end from './end';
 import * as help from './help';
+import * as list from './list';
 
 interface Command {
   command: string;
@@ -13,7 +14,7 @@ interface Command {
   initialize: () => void;
 }
 
-export const commands: Command[] = [start, help, polis, departments, doctors, follow, unfollow, end];
+export const commands: Command[] = [start, help, polis, departments, doctors, follow, list, unfollow, end];
 
 const initializeCommands = () => {
   commands.forEach((command) => command.initialize());

@@ -113,12 +113,13 @@ export const getSubscriptions = async (chat: Chat): Promise<Subscription[] | und
   return subs as Subscription[];
 };
 
-export const removeSubscription = async (chat: Chat, subscriptionId: string) => {
+export const removeSubscription = async (chat: Chat, subscriptionId: string): Promise<Subscription> => {
   const docRef = db.collection('chats').doc(`${chat.userId}`);
   const subRef = docRef.collection('subscriptions').doc(subscriptionId);
   const sub = await subRef.get();
   if (sub.exists) {
-    return subRef.delete();
+    await subRef.delete();
+    return sub.data() as Subscription;
   }
   throw new Error(`Подписка ${subscriptionId} не найдена`);
 };

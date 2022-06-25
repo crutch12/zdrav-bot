@@ -44,7 +44,7 @@ export const START_MESSAGE = [
   `${StepMessages.doctors}\n`,
   `${StepMessages.follow}\n`,
   `${StepMessages.follow2}\n`,
-  '5) Готово. Можно подписаться сразу на несколько больниц + специальностей.\n',
+  '5) Готово. Можно подписаться сразу на несколько больниц + специальностей\n',
   `${StepMessages.unfollow(Mocks.lpuCode, Mocks.departmentId)}\n`,
   'Помощь: */help*',
   'Удалить введённые данные и подписки: */end*',
