@@ -14,7 +14,7 @@ export const getDepartments = async (chat: Chat) => {
   );
 
   if (departmentsResult.success) {
-    departmentsResult.items = _.sortBy(departmentsResult.items, (i) => i.code);
+    departmentsResult.items = _.orderBy(departmentsResult.items, (i) => Number(i.code));
     return departmentsResult;
   }
 

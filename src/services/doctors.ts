@@ -14,7 +14,7 @@ const DAYS = 14;
 export const DOC_WORKS_TYPE = 1;
 export const getWorkingDays = (days: Week1[]) => days.filter((x) => x.docBusyType.type === DOC_WORKS_TYPE);
 export interface DoctorsQuery {
-  departmentId: number;
+  departmentId: string;
   lpuCode?: string;
   doctorId?: string;
   days?: number;

@@ -11,10 +11,9 @@ export const initialize = () => {
   bot.command(command, async (ctx) => {
     const chat = await Chat.getByUserId(ctx.message.from.id);
 
-    const [departmentRaw] = ctx.message.text.split(/\s+/).slice(1);
-    const departmentId = Number(departmentRaw);
+    const [departmentId] = ctx.message.text.split(/\s+/).slice(1);
 
-    if (Number.isNaN(departmentId)) {
+    if (!departmentId) {
       return ctx.reply('(Ошибка!) Нужно указать id специальности врача. См. /departments');
     }
 

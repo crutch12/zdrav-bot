@@ -12,11 +12,9 @@ export const initialize = () => {
       return ctx.reply(`Необходима авторизация (через полис)`);
     }
 
-    const [lpuCode, departmentRaw, doctorId] = ctx.message.text.split(/\s+/).slice(1);
+    const [lpuCode, departmentId, doctorId] = ctx.message.text.split(/\s+/).slice(1);
 
-    const departmentId = Number(departmentRaw);
-
-    if (!lpuCode || Number.isNaN(departmentId)) {
+    if (!lpuCode || !departmentId) {
       return ctx.reply('(Ошибка!) Нужно указать КОД_БОЛЬНИЦЫ КОД_СПЕЦИАЛЬНОСТИ +ID_ДОКТОРА. См. /doctors');
     }
 
