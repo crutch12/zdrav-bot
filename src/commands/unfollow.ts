@@ -16,7 +16,7 @@ export const initialize = () => {
     const [lpuCode, departmentId, doctorId] = parseCommandMessage(ctx.message.text);
 
     if (!lpuCode || !departmentId) {
-      return ctx.reply('(Ошибка!) Нужно указать КОД_БОЛЬНИЦЫ КОД_СПЕЦИАЛЬНОСТИ +ID_ДОКТОРА. См. /doctors');
+      return ctx.reply('(Ошибка!) Указанная подписка не найдена. См. /list');
     }
 
     const doctorsQuery = { departmentId, lpuCode, doctorId };
