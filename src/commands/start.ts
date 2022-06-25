@@ -19,7 +19,7 @@ export const StepMessages = {
     `*/doctors ${Mocks.departmentId}*`,
   ].join('\n'),
   follow: [
-    `4) Создание подписка. Из врачей берём номер нужной больницы (_например ${Mocks.lpuCode}_) и номер специальности (из шага 2):`,
+    `4) *Создание подписки.*\nИз врачей берём номер нужной больницы (_например ${Mocks.lpuCode}_) и номер специальности (из шага 2):`,
     `*/follow ${Mocks.lpuCode} ${Mocks.departmentId}*`,
   ].join('\n'),
   follow2: [
