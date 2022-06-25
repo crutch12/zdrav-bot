@@ -36,29 +36,37 @@ export const start = (bot: Telegraf) => {
         subscriptions.map(async (subscription) => {
           const query = subscription.query;
           console.info('Check sub', query);
-          const doctors = await getDoctorsWithSchedule(chat, query);
-          const schedules = getSchedules(doctors, true);
+          try {
+            const doctors = await getDoctorsWithSchedule(chat, query);
+            const schedules = getSchedules(doctors, true);
 
-          const sumBefore = _.sumBy(subscription.schedules, (schedule) => schedule.count_tickets);
-          const sumAfter = _.sumBy(schedules, (schedule) => schedule.count_tickets);
+            const sumBefore = _.sumBy(subscription.schedules, (schedule) => schedule.count_tickets);
+            const sumAfter = _.sumBy(schedules, (schedule) => schedule.count_tickets);
 
-          console.info('sumBefore/after', sumBefore, sumAfter);
+            console.info('sumBefore/after', sumBefore, sumAfter);
 
-          // Появились новые места для записи
-          if (sumAfter > sumBefore) {
-            const messages = getFollowMessages(schedules);
-            await bot.telegram.sendMessage(chat.userId, `Появились новые места! Было ${sumBefore}, стало ${sumAfter}`);
-            await Promise.all(messages.map((message) => bot.telegram.sendMessage(chat.userId, message)));
-            await bot.telegram.sendMessage(
-              chat.userId,
-              StepMessages.unfollow(query.lpuCode!, query.departmentId, query.doctorId),
-              {
-                parse_mode: 'Markdown',
-              },
-            );
+            // Появились новые места для записи
+            if (sumAfter > sumBefore) {
+              const messages = getFollowMessages(schedules);
+              await bot.telegram.sendMessage(
+                chat.userId,
+                `Появились новые места! Было ${sumBefore}, стало ${sumAfter}`,
+              );
+              await Promise.all(messages.map((message) => bot.telegram.sendMessage(chat.userId, message)));
+              await bot.telegram.sendMessage(
+                chat.userId,
+                StepMessages.unfollow(query.lpuCode!, query.departmentId, query.doctorId),
+                {
+                  parse_mode: 'Markdown',
+                },
+              );
+            }
+
+            await chat.subscribeSchedules(schedules, subscription.query);
+          } catch (err) {
+            console.error('Couldn\t check subscription.', `Chat: ${chat.userId}`, `Subscription: ${subscription.id}`);
+            console.error(err);
           }
-
-          await chat.subscribeSchedules(schedules, subscription.query);
         }),
       );
     }
