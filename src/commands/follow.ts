@@ -1,10 +1,11 @@
 import { bot } from '../bot';
 import { getDoctorsWithSchedule, getFollowMessages, getSchedules } from '../services/doctors';
 import { Chat } from '../lib/chat';
+import { StepMessages } from './start';
 
 export const command = 'follow';
 export const description =
-  'Подписаться на выбранную специальность в конкретной больнице (или на выбранного врача).\nПримеры (код_больницы код_специальности +код_врача):\n/follow 0701013 52\nfollow 0701013 52 a4e5391d-024c-43f2-bd4f-d222b907e549';
+  'Создать подписку на выбранную специальность в конкретной больнице (или на выбранного врача)';
 
 export const initialize = () => {
   bot.command(command, async (ctx) => {
@@ -14,7 +15,7 @@ export const initialize = () => {
       return ctx.reply(`Необходима авторизация (через полис)`);
     }
 
-    const [lpuCode, departmentRaw, doctorId] = ctx.message.text.split(' ').slice(1);
+    const [lpuCode, departmentRaw, doctorId] = ctx.message.text.split(/\s+/).slice(1);
 
     const departmentId = Number(departmentRaw);
 
@@ -33,7 +34,9 @@ export const initialize = () => {
 
       const messages = getFollowMessages(schedules);
 
-      return Promise.all(messages.map((message) => ctx.reply(message)));
+      await Promise.all(messages.map((message) => ctx.reply(message)));
+
+      return ctx.replyWithMarkdown(StepMessages.unfollow);
     } catch (err) {
       console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);

@@ -3,9 +3,9 @@ import { Chat, Polis, Subscription } from '../lib/chat';
 import { AuthResult } from '../types/Auth';
 import dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
-const FIRE_STORE_ACCOUNT_KEY = process.env.FIRE_STORE_ACCOUNT_KEY
+const FIRE_STORE_ACCOUNT_KEY = process.env.FIRE_STORE_ACCOUNT_KEY;
 
 admin.initializeApp({
   credential: admin.credential.cert(JSON.parse(FIRE_STORE_ACCOUNT_KEY)),
@@ -56,7 +56,11 @@ export const getChat = async (userId) => {
 
 export const updateChat = (
   chat: Chat,
-  { polis, authResult, initialCookies }: { polis?: Polis | null; authResult?: AuthResult | null; initialCookies?: string[] | null },
+  {
+    polis,
+    authResult,
+    initialCookies,
+  }: { polis?: Polis | null; authResult?: AuthResult | null; initialCookies?: string[] | null },
 ) => {
   console.info(chat.userId);
   const docRef = db.collection('chats').doc(`${chat.userId}`);
@@ -78,17 +82,16 @@ export const updateChat = (
 
 export const removeChat = async (userId) => {
   const docRef = db.collection('chats').doc(`${userId}`);
-  await docRef.collection('subscriptions');
 
   await docRef
     .collection('subscriptions')
     .listDocuments()
     .then((val) => {
-      return Promise.all(
-        val.map((val) => {
-          db.batch().delete(val);
-        }),
-      );
+      const batch = db.batch();
+      val.forEach((val) => {
+        batch.delete(val);
+      });
+      return batch.commit();
     });
 
   return docRef.delete();

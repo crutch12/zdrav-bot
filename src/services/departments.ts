@@ -1,5 +1,6 @@
 // GET https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/departments?lpuCode=
 
+import _ from 'lodash';
 import { Chat } from '../lib/chat';
 import { DepartmentsResult } from '../types/Department';
 
@@ -13,6 +14,7 @@ export const getDepartments = async (chat: Chat) => {
   );
 
   if (departmentsResult.success) {
+    departmentsResult.items = _.sortBy(departmentsResult.items, (i) => i.code);
     return departmentsResult;
   }
 

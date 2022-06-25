@@ -92,8 +92,6 @@ export class Chat {
             .join('; ')
         : null;
 
-    console.log(authCookie || this.initialAuthCookie || null);
-
     return axios.create({
       baseURL: BASE_URL,
       httpAgent: new https.Agent({ rejectUnauthorized: false }),

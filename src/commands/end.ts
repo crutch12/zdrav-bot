@@ -8,7 +8,7 @@ export const initialize = () => {
   bot.command(command, async (ctx) => {
     try {
       await removeChat(ctx.message.from.id);
-      return ctx.reply('Все данные и подписки успешно удалены.');
+      return ctx.reply('Все данные и подписки успешно удалены');
     } catch (err) {
       console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);

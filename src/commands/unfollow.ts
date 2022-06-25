@@ -2,8 +2,7 @@ import { bot } from '../bot';
 import { Chat } from '../lib/chat';
 
 export const command = 'unfollow';
-export const description =
-  'Отписаться от созданной подписки.\nПримеры (код_больницы код_специальности +код_врача):\n/unfollow 0701013 52\nunfollow 0701013 52 a4e5391d-024c-43f2-bd4f-d222b907e549';
+export const description = 'Удалить созданную подписку';
 
 export const initialize = () => {
   bot.command(command, async (ctx) => {
@@ -13,7 +12,7 @@ export const initialize = () => {
       return ctx.reply(`Необходима авторизация (через полис)`);
     }
 
-    const [lpuCode, departmentRaw, doctorId] = ctx.message.text.split(' ').slice(1);
+    const [lpuCode, departmentRaw, doctorId] = ctx.message.text.split(/\s+/).slice(1);
 
     const departmentId = Number(departmentRaw);
 

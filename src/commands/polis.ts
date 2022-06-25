@@ -2,6 +2,7 @@ import { bot } from '../bot';
 import { Chat, Polis } from '../lib/chat';
 import { authByPolis } from '../services/auth';
 import { updateChat } from '../db';
+import { StepMessages } from './start';
 
 export const command = 'polis';
 export const description = 'Указать полис и дату рождения (для авторизации)';
@@ -10,10 +11,10 @@ export const initialize = () => {
   bot.command(command, async (ctx) => {
     const chat = await Chat.getByUserId(ctx.message.from.id);
 
-    const [polisRaw, birthday] = ctx.message.text.split(' ').slice(1);
+    const [polisRaw, birthday] = ctx.message.text.split(/\s+/).slice(1);
 
     if (!polisRaw || !birthday) {
-      return ctx.reply('(Ошибка!) Необходимо ввести полис в формате: номер дата.рождения');
+      return ctx.replyWithMarkdown('(Ошибка!) Необходимо ввести полис в формате\n: *5040200838017611 01.12.2000*');
     }
 
     const polis: Polis = {
@@ -30,9 +31,9 @@ export const initialize = () => {
       polis,
     });
 
-    ctx.reply(`Удалось добавить Номер полиса ${polisRaw} и Дату рождения ${birthday}!`);
+    await ctx.replyWithMarkdown(`Удалось добавить Номер полиса (*${polisRaw}*) и Дату рождения (*${birthday}*)`);
 
-    ctx.reply('Начинаю аутентификацию на портале госуслуг...');
+    await ctx.reply('Начинаем аутентификацию на портале госуслуг...');
 
     try {
       const initialCookies = await chat.getInitialSessionCookie();
@@ -44,14 +45,16 @@ export const initialize = () => {
       });
 
       const doctor = authResult.items!.doctor;
-      return ctx.reply(
+      await ctx.replyWithMarkdown(
         [
           `Аутентификация прошла успешно. ${authResult.message}.`,
           `Ваш personGuid: ${authResult.items!.personGuid}`,
           `Ваш врач: ${[doctor.lastname, doctor.name, doctor.surname].join(' ')}`,
-          `Ваша больница: ${doctor.lpu_name} (${doctor.lpu_code})`,
+          `Ваша больница: ${doctor.lpu_name} (*${doctor.lpu_code}*)`,
         ].join('\n'),
       );
+
+      return ctx.replyWithMarkdown(StepMessages.departments);
     } catch (err) {
       console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);
