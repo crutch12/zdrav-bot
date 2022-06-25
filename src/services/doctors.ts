@@ -11,8 +11,8 @@ import { Doctor, DoctorsResult, Week1 } from '../types/Doctor';
 
 const DAYS = 14;
 
-export const DOC_WORKS_TYPE = 1;
-export const getWorkingDays = (days: Week1[]) => days.filter((x) => x.docBusyType.type === DOC_WORKS_TYPE);
+export const DOC_WEEKEND_TYPE = 0;
+export const getWorkingDays = (days: Week1[]) => days.filter((x) => x.docBusyType.type !== DOC_WEEKEND_TYPE);
 export interface DoctorsQuery {
   departmentId: string;
   lpuCode?: string;
@@ -62,8 +62,8 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
   return doctors;
 };
 
-export const getSchedules = (doctors: Doctor[]) => {
-  const schedules: Schedule[] = doctors.map((doctor) => {
+export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
+  let schedules: Schedule[] = doctors.map((doctor) => {
     const workingDays = [...getWorkingDays(doctor.week1), ...getWorkingDays(doctor.week2)];
     return {
       id: doctor.id,
@@ -76,6 +76,15 @@ export const getSchedules = (doctors: Doctor[]) => {
       })),
     };
   });
+
+  if (onlyAvailable) {
+    schedules = schedules
+      .filter((schedule) => schedule.count_tickets > 0)
+      .map((schedule) => ({
+        ...schedule,
+        days: schedule.days.filter((day) => day.count_tickets > 0),
+      }));
+  }
 
   return schedules;
 };

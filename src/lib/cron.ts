@@ -37,7 +37,7 @@ export const start = (bot: Telegraf) => {
           const query = subscription.query;
           console.info('Check sub', query);
           const doctors = await getDoctorsWithSchedule(chat, query);
-          const schedules = getSchedules(doctors);
+          const schedules = getSchedules(doctors, true);
 
           const sumBefore = _.sumBy(subscription.schedules, (schedule) => schedule.count_tickets);
           const sumAfter = _.sumBy(schedules, (schedule) => schedule.count_tickets);
