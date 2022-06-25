@@ -12,19 +12,19 @@ const Mocks = {
 };
 
 export const StepMessages = {
-  polis: ['1) Указываем полис (нового типа):', `*/polis ${Mocks.polis} ${Mocks.birthday}*`].join('\n'),
+  polis: ['1) Указываем полис (нового типа) и дату:', `*/polis ${Mocks.polis} ${Mocks.birthday}*`].join('\n'),
   departments: ['2) Получаем список доступных специальностей:', '*/departments*'].join('\n'),
   doctors: [
     `3) Из специальностей выбираем номер нужной (_например ${Mocks.departmentId}_) и запрашиваем список врачей:`,
     `*/doctors ${Mocks.departmentId}*`,
   ].join('\n'),
   follow: [
-    `4) Из врачей берём номер нужной больницы (_например ${Mocks.lpuCode}_) и номер специальности (из шага 2) и подписываемся на места`,
+    `4) Создание подписка. Из врачей берём номер нужной больницы (_например ${Mocks.lpuCode}_) и номер специальности (из шага 2):`,
     `*/follow ${Mocks.lpuCode} ${Mocks.departmentId}*`,
   ].join('\n'),
   follow2: [
     `4.1) Можно подписаться на конкретного врача (_например ${Mocks.doctorId}_)`,
-    `*/follow ${Mocks.lpuCode} ${Mocks.departmentId}* ${Mocks.doctorId}`,
+    `*/follow ${Mocks.lpuCode} ${Mocks.departmentId}* *${Mocks.doctorId}*`,
   ].join('\n'),
   unfollow: (lpuCode: string, departmentId: string, doctorId?: string) =>
     [
