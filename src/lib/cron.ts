@@ -4,6 +4,7 @@ import { Telegraf } from 'telegraf';
 import { getDoctorsWithSchedule, getFollowMessages, getSchedules } from '../services/doctors';
 import _ from 'lodash';
 import { getChats } from '../db';
+import { StepMessages } from '../commands/start';
 
 export const start = (bot: Telegraf) => {
   return schedule('*/10 * * * *', async () => {
@@ -33,8 +34,9 @@ export const start = (bot: Telegraf) => {
 
       await Promise.all(
         subscriptions.map(async (subscription) => {
-          console.info('Check sub', subscription.query);
-          const doctors = await getDoctorsWithSchedule(chat, subscription.query);
+          const query = subscription.query;
+          console.info('Check sub', query);
+          const doctors = await getDoctorsWithSchedule(chat, query);
           const schedules = getSchedules(doctors);
 
           const sumBefore = _.sumBy(subscription.schedules, (schedule) => schedule.count_tickets);
@@ -47,6 +49,13 @@ export const start = (bot: Telegraf) => {
             const messages = getFollowMessages(schedules);
             await bot.telegram.sendMessage(chat.userId, `Появились новые места! Было ${sumBefore}, стало ${sumAfter}`);
             await Promise.all(messages.map((message) => bot.telegram.sendMessage(chat.userId, message)));
+            await bot.telegram.sendMessage(
+              chat.userId,
+              StepMessages.unfollow(query.lpuCode!, query.departmentId, query.doctorId),
+              {
+                parse_mode: 'Markdown',
+              },
+            );
           }
 
           await chat.subscribeSchedules(schedules, subscription.query);

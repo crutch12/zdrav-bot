@@ -28,11 +28,13 @@ export const initialize = () => {
 
       const schedules = getSchedules(doctors);
 
-      await chat.subscribeSchedules(schedules, doctorsQuery);
-
       const messages = getFollowMessages(schedules);
 
       await Promise.all(messages.map((message) => ctx.reply(message)));
+
+      const subscribtion = await chat.subscribeSchedules(schedules, doctorsQuery);
+
+      await ctx.replyWithMarkdown(`Подписка *${subscribtion.id}* успешно создана`);
 
       return ctx.replyWithMarkdown(StepMessages.unfollow(lpuCode, departmentId));
     } catch (err) {
