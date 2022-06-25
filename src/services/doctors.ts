@@ -83,7 +83,7 @@ export const getSchedules = (doctors: Doctor[]) => {
 export const getFollowMessages = (schedules: Schedule[]) =>
   schedules.map((schedule) => {
     const message = [
-      `(${schedule.person_id}) ${schedule.displayName}`,
+      `(${schedule.person_id})\n${schedule.displayName}`,
       `Свободных мест: ${schedule.count_tickets}`,
       `Дни приёма:\n${schedule.days.map((x) => `${x.date_short} (${x.count_tickets} талонов)`).join('\n')}`,
     ].join('\n');
