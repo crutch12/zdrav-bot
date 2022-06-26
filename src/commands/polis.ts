@@ -15,7 +15,7 @@ export const initialize = () => {
     const [polisRaw, birthday] = parseCommandMessage(ctx.message.text);
 
     if (!polisRaw || !birthday) {
-      return ctx.replyWithMarkdown('(Ошибка!) Необходимо ввести полис в формате\n: *5040200838017611 01.12.2000*');
+      return ctx.replyWithMarkdown('(Ошибка!) Необходимо ввести полис в формате:\n*5040200838017611 01.12.2000*');
     }
 
     const polis: Polis = {
