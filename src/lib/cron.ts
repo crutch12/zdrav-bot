@@ -7,7 +7,7 @@ import { getChats } from '../db';
 import * as unfollow from '../commands/unfollow';
 
 export const start = (bot: Telegraf) => {
-  return schedule('*/1 * * * *', async () => {
+  return schedule('*/10 * * * *', async () => {
     console.info('run cron every 10 min');
 
     const chats = await getChats();
