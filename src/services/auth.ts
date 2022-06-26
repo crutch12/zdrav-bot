@@ -1,13 +1,13 @@
-// POST https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/personal
-// birthday: "11.11.1111"
-// nPol: "1231231231231231"
-// pol: "1231231231231231"
-// sPol: null
 import FormData from 'form-data';
 
 import { Chat } from '../lib/chat';
 import { AuthResult } from '../types/Auth';
 
+// POST https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/personal
+// birthday: "11.11.1111"
+// nPol: "1231231231231231"
+// pol: "1231231231231231"
+// sPol: null
 export const authByPolis = async (chat: Chat) => {
   if (!chat.polis) {
     throw new Error('Необходимо заполнить полис');
@@ -33,4 +33,11 @@ export const authByPolis = async (chat: Chat) => {
   }
 
   throw new Error(`${authResult.code}: ${authResult.message}`);
+};
+
+// GET https://uslugi.mosreg.ru/zdrav/
+// run without cookie!!
+export const getInitialSessionCookie = async (chat: Chat) => {
+  const { headers } = await chat.axios.get('/zdrav/', { headers: { Cookie: null } });
+  return chat.setInitialCookies(headers['set-cookie']);
 };

@@ -1,6 +1,6 @@
 import { bot } from '../bot';
 import { Chat, Polis } from '../lib/chat';
-import { authByPolis } from '../services/auth';
+import { authByPolis, getInitialSessionCookie } from '../services/auth';
 import { updateChat } from '../db';
 import { StepMessages } from './start';
 import { parseCommandMessage } from '../utils';
@@ -37,7 +37,7 @@ export const initialize = () => {
     await ctx.reply('Начинаем аутентификацию на портале госуслуг...');
 
     try {
-      const initialCookies = await chat.getInitialSessionCookie();
+      const initialCookies = await getInitialSessionCookie(chat);
       const authResult = await authByPolis(chat);
 
       await updateChat(chat, {

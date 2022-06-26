@@ -6,7 +6,7 @@ import { AuthResult } from '../types/Auth';
 import { DoctorsQuery } from '../services/doctors';
 import { createChat, getChat, getSubscriptions, removeSubscription, setSubscription, updateChat } from '../db';
 import setCookie from 'set-cookie-parser';
-import { authByPolis } from '../services/auth';
+import { authByPolis, getInitialSessionCookie } from '../services/auth';
 
 export type Polis = {
   birthday: string;
@@ -114,18 +114,13 @@ export class Chat {
     return this._authResult;
   }
 
-  public async getInitialSessionCookie() {
-    const { headers } = await this.axios.get('/zdrav/', { headers: { Cookie: null } });
-    this.setInitialCookies(headers['set-cookie']);
-    return this._initialCookies;
-  }
-
   public setPolis(polis: Polis) {
     this._polis = polis;
   }
 
   public setInitialCookies(initialCookies: string[]) {
     this._initialCookies = initialCookies;
+    return this._initialCookies;
   }
 
   public setAuthResult(authResult: AuthResult) {
@@ -156,7 +151,7 @@ export class Chat {
   }
 
   public async revalidate() {
-    const initialCookies = await this.getInitialSessionCookie();
+    const initialCookies = await getInitialSessionCookie(this);
     const authResult = await authByPolis(this);
 
     await updateChat(this, {

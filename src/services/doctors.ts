@@ -1,10 +1,4 @@
-// GET https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/doctors?lpuCode=&departmentId=71&doctorId=&days=14
-// auth cookie by police
-// GET https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/doctors?lpuCode=&departmentId=8&doctorId=&days=14
-
-// https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/doctors?lpuCode=&departmentId=52&doctorId=12cbb325-ba4f-4551-ac87-0be1c2aec6ba&days=14
-
-// /zdrav/doctor_appointment/api/doctors?lpuCode=0701016&departmentId=52&doctorId=12cbb325-ba4f-4551-ac87-0be1c2aec6ba&days=14
+// GET https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/doctors?lpuCode=&departmentId=76&doctorId=&days=14
 
 import { Chat, Schedule } from '../lib/chat';
 import { Doctor, DoctorsResult, Week1 } from '../types/Doctor';
