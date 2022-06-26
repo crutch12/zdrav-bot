@@ -1,5 +1,7 @@
 import { bot } from '../bot';
 import { Chat, Subscription } from '../lib/chat';
+import { Markup } from 'telegraf';
+import * as unfollow from './unfollow';
 
 export const command = 'list';
 export const description = 'Список активных подписок';
@@ -18,7 +20,19 @@ export const initialize = () => {
         return ctx.reply('Список активных подписок пуст');
       }
 
-      return ctx.reply('Список активных подписок:\n' + subscriptions.map((sub) => sub.id).join('\n'));
+      return ctx.replyWithMarkdown(
+        'Список активных подписок:\n' + subscriptions.map((sub) => `*${sub.id}*`).join('\n'),
+        {
+          ...Markup.inlineKeyboard(
+            subscriptions.map((subscription) =>
+              Markup.button.callback(`Удалить подписку ${subscription.id}`, `${unfollow.command} ${subscription.id}`),
+            ),
+            {
+              columns: 1,
+            },
+          ),
+        },
+      );
     } catch (err) {
       console.error(err);
       return ctx.reply(`(Ошибка!) ${err.message}`);

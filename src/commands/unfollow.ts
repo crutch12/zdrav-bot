@@ -30,4 +30,27 @@ export const initialize = () => {
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });
+  bot.action(new RegExp(`^${command}.*$`), async (ctx) => {
+    const chat = await Chat.getByUserId(ctx.callbackQuery.from.id);
+
+    if (!chat.authResult) {
+      return await ctx.answerCbQuery('Необходима авторизация (через полис)');
+    }
+
+    const [lpuCode, departmentId, doctorId] = parseCommandMessage(ctx.match[0]);
+
+    try {
+      const subscription = await chat.removeSubscription({ lpuCode, departmentId, doctorId });
+
+      await ctx.editMessageReplyMarkup({
+        inline_keyboard: [],
+      });
+
+      await ctx.answerCbQuery();
+
+      return await ctx.replyWithMarkdown(`Подписка *${subscription.id}* удалена`);
+    } catch (err) {
+      return await ctx.answerCbQuery(`(Ошибка!) ${err.message}`);
+    }
+  });
 };

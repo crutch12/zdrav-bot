@@ -8,6 +8,7 @@
 
 import { Chat, Schedule } from '../lib/chat';
 import { Doctor, DoctorsResult, Week1 } from '../types/Doctor';
+import { shortPersonId } from '../utils';
 
 const DAYS = 14;
 
@@ -49,7 +50,7 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
 
   const doctors = foundDoctors.items
     .flatMap((item) => item.doctors)
-    .filter((doctor) => (doctorsQuery.doctorId ? doctor.person_id === doctorsQuery.doctorId : true));
+    .filter((doctor) => (doctorsQuery.doctorId ? doctor.person_id.startsWith(doctorsQuery.doctorId) : true));
 
   if (!doctors.length) {
     throw new Error(
@@ -92,9 +93,9 @@ export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
 export const getFollowMessages = (schedules: Schedule[]) =>
   schedules.map((schedule) => {
     const message = [
-      `(${schedule.person_id})\n${schedule.displayName}`,
-      `Свободных мест: ${schedule.count_tickets}`,
-      `Дни приёма:\n${schedule.days.map((x) => `${x.date_short} (${x.count_tickets} талонов)`).join('\n')}`,
+      `(_${shortPersonId(schedule.person_id)}_) ${schedule.displayName}`,
+      `Свободных мест: *${schedule.count_tickets}*`,
+      `*Дни:*\n${schedule.days.map((x) => `_${x.date_short}_ (${x.count_tickets} талонов)`).join('\n')}`,
     ].join('\n');
     return message;
   });

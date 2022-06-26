@@ -1,13 +1,13 @@
 import { schedule } from 'node-cron';
 import { Subscription } from './chat';
-import { Telegraf } from 'telegraf';
+import { Markup, Telegraf } from 'telegraf';
 import { getDoctorsWithSchedule, getFollowMessages, getSchedules } from '../services/doctors';
 import _ from 'lodash';
 import { getChats } from '../db';
-import { StepMessages } from '../commands/start';
+import * as unfollow from '../commands/unfollow';
 
 export const start = (bot: Telegraf) => {
-  return schedule('*/10 * * * *', async () => {
+  return schedule('*/1 * * * *', async () => {
     console.info('run cron every 10 min');
 
     const chats = await getChats();
@@ -50,16 +50,17 @@ export const start = (bot: Telegraf) => {
               const messages = getFollowMessages(schedules);
               await bot.telegram.sendMessage(
                 chat.userId,
-                `Появились новые места! Было ${sumBefore}, стало ${sumAfter}`,
-              );
-              await Promise.all(messages.map((message) => bot.telegram.sendMessage(chat.userId, message)));
-              await bot.telegram.sendMessage(
-                chat.userId,
-                StepMessages.unfollow(query.lpuCode!, query.departmentId, query.doctorId),
+                `(${subscription.id}) Появились новые места! Было ${sumBefore}, стало ${sumAfter}`,
                 {
-                  parse_mode: 'Markdown',
+                  ...Markup.inlineKeyboard([
+                    Markup.button.callback(
+                      `Удалить подписку ${subscription.id}`,
+                      `${unfollow.command} ${subscription.id}`,
+                    ),
+                  ]),
                 },
               );
+              await Promise.all(messages.map((message) => bot.telegram.sendMessage(chat.userId, message)));
             }
 
             await chat.subscribeSchedules(schedules, subscription.query);

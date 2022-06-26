@@ -51,7 +51,8 @@ export const initialize = () => {
           `Аутентификация прошла успешно. ${authResult.message}.`,
           `Ваш personGuid: ${authResult.items!.personGuid}`,
           `Ваш врач: ${[doctor.lastname, doctor.name, doctor.surname].join(' ')}`,
-          `Ваша больница: ${doctor.lpu_name} (*${doctor.lpu_code}*)`,
+          `Ваша больница: ${doctor.lpu_name}`,
+          `Код больницы: *${doctor.lpu_code}*`,
         ].join('\n'),
       );
 

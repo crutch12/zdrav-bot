@@ -66,6 +66,10 @@ export class Chat {
     return chat ? chat : createChat(userId);
   }
 
+  public static getSubscriptionKey({ lpuCode, departmentId, doctorId }: DoctorsQuery) {
+    return getKey(lpuCode, departmentId, doctorId);
+  }
+
   public setCommand(command: Command) {
     this.lastCommand = command;
   }
