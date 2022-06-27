@@ -58,9 +58,16 @@ export const start = (bot: Telegraf) => {
                       `${unfollow.command} ${subscription.id}`,
                     ),
                   ]),
+                  parse_mode: 'Markdown',
                 },
               );
-              await Promise.all(messages.map((message) => bot.telegram.sendMessage(chat.userId, message)));
+              await Promise.all(
+                messages.map((message) =>
+                  bot.telegram.sendMessage(chat.userId, message, {
+                    parse_mode: 'Markdown',
+                  }),
+                ),
+              );
             }
 
             await chat.subscribeSchedules(schedules, subscription.query);
