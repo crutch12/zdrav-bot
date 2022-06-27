@@ -50,7 +50,7 @@ export const start = (bot: Telegraf) => {
               const messages = getFollowMessages(schedules);
               await bot.telegram.sendMessage(
                 chat.userId,
-                `(${subscription.id}) Появились новые места! Было ${sumBefore}, стало ${sumAfter}`,
+                `(_${subscription.id}_) Появились новые места! Было ${sumBefore}, стало ${sumAfter}`,
                 {
                   ...Markup.inlineKeyboard([
                     Markup.button.callback(
