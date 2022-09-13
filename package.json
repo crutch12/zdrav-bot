@@ -11,7 +11,7 @@
   "engines": {
     "node": "16"
   },
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
   "dependencies": {
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
