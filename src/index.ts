@@ -1,5 +1,5 @@
-import http from 'http';
 import { initializeCommands } from './commands';
+import serve, { json } from 'micro';
 import { echoBot } from './bot';
 
 initializeCommands();
@@ -9,12 +9,19 @@ const port = Number(process.env.PORT || 3000);
 
 console.log('start server', host, port);
 
-const server = new http.Server((req, res) => {
-  console.log(req.method, req.url, new Date());
-  echoBot(req, res);
-  res.end('Hello world!');
+const server = serve(async (req, res) => {
+  const body = req.method === 'POST' ? await json(req) : null;
+
+  console.log(req.method, req.url, body, new Date());
+
+  if (body) {
+    return echoBot(body, res);
+  }
+
+  return 'Hello world';
 });
 
+// @ts-ignore // Типы врут
 server.listen(port, host, () => {
   console.log(`Server is running on http://${host}:${port}`);
 });
