@@ -14,10 +14,10 @@ import { start } from './lib/cron';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN, { telegram: { webhookReply: true } });
 
-bot.launch().then(() => {
-  bot.telegram.setMyCommands(commands);
-  start(bot);
-});
+bot.telegram.setMyCommands(commands);
+start(bot);
+// bot.launch().then(() => {
+// });
 
 // error handling
 bot.catch((err, ctx) => {
