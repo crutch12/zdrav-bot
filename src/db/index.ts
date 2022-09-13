@@ -1,9 +1,6 @@
 import * as admin from 'firebase-admin';
 import { Chat, Polis, Subscription } from '../lib/chat';
 import { AuthResult } from '../types/Auth';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const FIRE_STORE_ACCOUNT_KEY = process.env.FIRE_STORE_ACCOUNT_KEY;
 
