@@ -12,7 +12,7 @@ import { Telegraf } from 'telegraf';
 import { commands } from './commands';
 import { start } from './lib/cron';
 
-const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN, { telegram: { webhookReply: true } });
 
 bot.launch().then(() => {
   bot.telegram.setMyCommands(commands);
@@ -29,4 +29,14 @@ bot.catch((err, ctx) => {
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
-export { bot };
+// handle all telegram updates with HTTPs trigger
+const echoBot = async (request, response) => {
+  console.log('Incoming message', request.body);
+  return await bot.handleUpdate(request.body, response).then((rv) => {
+    // if it's not a request from the telegram, rv will be undefined, but we should respond with 200
+    // @ts-ignore
+    // return !rv && response.sendStatus(200);
+  });
+};
+
+export { bot, echoBot };

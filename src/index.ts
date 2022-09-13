@@ -1,5 +1,6 @@
 import http from 'http';
 import { initializeCommands } from './commands';
+import { echoBot } from './bot';
 
 initializeCommands();
 
@@ -10,6 +11,7 @@ console.log('start server', host, port);
 
 const server = new http.Server((req, res) => {
   console.log(req.method, req.url, new Date());
+  echoBot(req, res);
   res.end('Hello world!');
 });
 
