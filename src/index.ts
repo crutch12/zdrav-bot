@@ -1,6 +1,7 @@
-import { initializeCommands } from './commands';
+import { commands, initializeCommands } from './commands';
 import serve, { json } from 'micro';
-import { echoBot } from './bot';
+import { bot, echoBot } from './bot';
+import { run } from './lib/cron';
 
 initializeCommands();
 
@@ -10,6 +11,12 @@ const port = Number(process.env.PORT || 3000);
 console.log('start server', host, port);
 
 const server = serve(async (req, res) => {
+  bot.telegram.setMyCommands(commands);
+
+  if (req.url === '/cron') {
+    return run(bot);
+  }
+
   const body = req.method === 'POST' ? await json(req) : null;
 
   console.log(req.method, req.url, body, new Date());
