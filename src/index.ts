@@ -14,7 +14,10 @@ const server = serve(async (req, res) => {
   bot.telegram.setMyCommands(commands);
 
   if (req.url === '/cron') {
-    return run(bot);
+    return run(bot).catch((err) => {
+      console.error(err);
+      return 'fail';
+    });
   }
 
   const body = req.method === 'POST' ? await json(req) : null;

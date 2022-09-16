@@ -82,4 +82,6 @@ export const run = async (bot: Telegraf) => {
       }),
     );
   }
+
+  return 'done';
 };
