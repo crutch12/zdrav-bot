@@ -21,13 +21,13 @@ export const run = async (bot: Telegraf) => {
   for (const chat of chats) {
     console.info('Chat', chat.userId);
 
-    if (chat.cookieExpired) {
-      console.info('Cookie expired, should revalidate', chat.userId);
-      await chat.revalidate().catch((err) => {
-        console.error('Couldn\t revalidate chat', chat.userId);
-        console.error(err);
-      });
-    }
+    // if (chat.cookieExpired) {
+    //   console.info('Cookie expired, should revalidate', chat.userId);
+    //   await chat.revalidate().catch((err) => {
+    //     console.error('Couldn\t revalidate chat', chat.userId);
+    //     console.error(err);
+    //   });
+    // }
 
     const subscriptions: Subscription[] = await chat.getAllSubscriptions().catch((err) => {
       console.info(err);

@@ -1,6 +1,6 @@
 import { bot } from '../bot';
 import { Chat, Polis } from '../lib/chat';
-import { authByPolis, getInitialSessionCookie } from '../services/auth';
+import { authByPolis } from '../services/auth';
 import { updateChat } from '../db';
 import { StepMessages } from './start';
 import { parseCommandMessage } from '../utils';
@@ -21,11 +21,11 @@ export const initialize = () => {
     const polis: Polis = {
       birthday: birthday,
       // nPol: polis,
-      nPol: null,
-      pol: polisRaw,
+      // nPol: null,
+      number: polisRaw,
       // sPol: polis,
-      sPol: null,
-      auth: false,
+      // sPol: null,
+      // auth: false,
     };
 
     await updateChat(chat, {
@@ -37,22 +37,23 @@ export const initialize = () => {
     await ctx.reply('Начинаем аутентификацию на портале госуслуг...');
 
     try {
-      const initialCookies = await getInitialSessionCookie(chat);
       const authResult = await authByPolis(chat);
 
       await updateChat(chat, {
         authResult,
-        initialCookies,
+        // initialCookies,
       });
 
-      const doctor = authResult.items!.doctor;
+      const doctor = authResult.doctor;
       await ctx.replyWithMarkdown(
         [
-          `Аутентификация прошла успешно. ${authResult.message}.`,
-          `Ваш personGuid: ${authResult.items!.personGuid}`,
-          `Ваш врач: ${[doctor.lastname, doctor.name, doctor.surname].join(' ')}`,
-          `Ваша больница: ${doctor.lpu_name}`,
-          `Код больницы: *${doctor.lpu_code}*`,
+          `Аутентификация прошла успешно.`,
+          `Ваш personGuid: ${authResult.personGuid}`,
+          `Ваш врач: ${doctor ? [doctor.lastname, doctor.name, doctor.surname].join(' ') : '--'}`,
+          ...(doctor ? [
+            `Ваша больница: ${doctor.lpu_name}`,
+            `Код больницы: *${doctor.lpu_code}*`,
+          ] : []),
         ].join('\n'),
       );
 

@@ -85,24 +85,9 @@ export interface Area {
   type: string;
 }
 
-export interface Items {
-  doctor: Doctor;
-  lpu: Lpu[];
-  area: Area;
-  personGuid: string;
-}
-
-export interface Post {
-  sPol?: any;
-  nPol: string;
-  pol: string;
-  birthday: string;
-}
-
 export interface AuthResult {
-  code: number;
-  message: string;
-  items?: Items;
-  success?: boolean;
-  post?: Post;
+  doctor: Doctor | null;
+  lpu: Lpu[];
+  area: Area | null;
+  personGuid: string;
 }

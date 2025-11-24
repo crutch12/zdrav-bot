@@ -135,8 +135,5 @@ export interface Item {
 
 export interface DoctorsResult {
   code: number;
-  message: string;
-  success: boolean;
   items: Item[];
-  all_count_tickets: number;
 }

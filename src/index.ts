@@ -10,6 +10,12 @@ const port = Number(process.env.PORT || 3000);
 
 console.log('start server', host, port);
 
+bot.launch({
+  webhook: {
+    domain: process.env.TELEGRAM_DOMAIN,
+  },
+});
+
 const server = serve(async (req, res) => {
   bot.telegram.setMyCommands(commands);
 

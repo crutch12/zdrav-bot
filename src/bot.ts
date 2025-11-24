@@ -9,12 +9,10 @@
 // });
 
 import { Telegraf } from 'telegraf';
-import { commands } from './commands';
 import { start } from './lib/cron';
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN, { telegram: { webhookReply: true } });
 
-bot.telegram.setMyCommands(commands);
 start(bot);
 // bot.launch().then(() => {
 // });

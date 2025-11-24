@@ -1,43 +1,36 @@
-import FormData from 'form-data';
+// import FormData from 'form-data';
 
 import { Chat } from '../lib/chat';
 import { AuthResult } from '../types/Auth';
 
-// POST https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/personal
-// birthday: "11.11.1111"
-// nPol: "1231231231231231"
-// pol: "1231231231231231"
-// sPol: null
+// POST https://zdrav.mosreg.ru/api/v2/emias/iemk/personal?number=&birthday=
+// birthday: "1111-11-11"
+// number: "1231231231231231"
 export const authByPolis = async (chat: Chat) => {
   if (!chat.polis) {
     throw new Error('Необходимо заполнить полис');
   }
 
-  const polisFormData = new FormData();
-  polisFormData.append('pol', chat.polis.pol);
-  polisFormData.append('birthday', chat.polis.birthday);
+  // const polisFormData = new FormData();
+  // polisFormData.append('number', chat.polis.pol);
+  // polisFormData.append('birthday', chat.polis.birthday.split('.').reverse().join('-'));
 
-  const { data: authResult } = await chat.axios.post<AuthResult>(
-    '/zdrav/doctor_appointment/api/personal',
-    polisFormData,
+  const { data: authResult, status } = await chat.axios.get<AuthResult>(
+    '/api/v2/emias/iemk/personal',
     {
-      headers: {
-        ...polisFormData.getHeaders(),
-      },
-    },
+      params: {
+        // number: chat.polis.number,
+        // birthday: chat.polis.birthday.split('.').reverse().join('-'), // 13.09.2000 -> 2000-09-13
+      }
+    }
   );
 
-  if (authResult.success) {
+  // console.log({ authResult })
+
+  if (authResult.personGuid) {
     chat.setAuthResult(authResult);
     return authResult;
   }
 
-  throw new Error(`${authResult.code}: ${authResult.message}`);
-};
-
-// GET https://uslugi.mosreg.ru/zdrav/
-// run without cookie!!
-export const getInitialSessionCookie = async (chat: Chat) => {
-  const { headers } = await chat.axios.get('/zdrav/', { headers: { Cookie: null } });
-  return chat.setInitialCookies(headers['set-cookie']);
+  throw new Error(`${status}: ${JSON.stringify(authResult, null, 2)}`);
 };

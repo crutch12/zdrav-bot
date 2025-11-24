@@ -46,7 +46,7 @@ export const getChat = async (userId) => {
       .then((snapshot) => snapshot.docs.map((x) => x.data()))) as Subscription[],
     polis: value && value.polis,
     authResult: value && value.authResult,
-    initialCookies: value && value.initialCookies,
+    // initialCookies: value && value.initialCookies,
   });
   return chat;
 };
@@ -56,8 +56,12 @@ export const updateChat = (
   {
     polis,
     authResult,
-    initialCookies,
-  }: { polis?: Polis | null; authResult?: AuthResult | null; initialCookies?: string[] | null },
+    // initialCookies,
+  }: {
+    polis?: Polis | null;
+    authResult?: AuthResult | null;
+    // initialCookies?: string[] | null
+  },
 ) => {
   console.info(chat.userId);
   const docRef = db.collection('chats').doc(`${chat.userId}`);
@@ -67,13 +71,13 @@ export const updateChat = (
   if (typeof authResult !== 'undefined') {
     chat.setAuthResult(authResult);
   }
-  if (typeof initialCookies !== 'undefined') {
-    chat.setInitialCookies(initialCookies);
-  }
+  // if (typeof initialCookies !== 'undefined') {
+  //   chat.setInitialCookies(initialCookies);
+  // }
   return docRef.update({
     polis,
     authResult,
-    initialCookies,
+    // initialCookies,
   });
 };
 

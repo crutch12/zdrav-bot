@@ -7,8 +7,5 @@ export interface Item {
 }
 
 export interface DepartmentsResult {
-  code: number;
-  message: string;
-  success: boolean;
   items: Item[];
 }

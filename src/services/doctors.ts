@@ -1,8 +1,9 @@
-// GET https://uslugi.mosreg.ru/zdrav/doctor_appointment/api/doctors?lpuCode=&departmentId=76&doctorId=&days=14
+// GET https://zdrav.mosreg.ru/api/v2/emias/iemk/doctors?number=&birthday=&departmentId=&days=&doctorId=
 
 import { Chat, Schedule } from '../lib/chat';
 import { Doctor, DoctorsResult, Week1 } from '../types/Doctor';
 import { shortPersonId } from '../utils';
+import { sumBy } from 'lodash';
 
 const DAYS = 14;
 
@@ -20,19 +21,21 @@ export const getDoctors = async (chat: Chat, doctorsQuery: DoctorsQuery) => {
     throw new Error('Необходима авторизация (через полис)');
   }
 
-  const { data: doctorsResult } = await chat.axios.get<DoctorsResult>('/zdrav/doctor_appointment/api/doctors', {
+  const { data: doctorsResult, status } = await chat.axios.get<DoctorsResult>('/api/v2/emias/iemk/doctors', {
     params: {
+      // number: chat.polis.number,
+      // birthday: chat.polis.birthday.split('.').reverse().join('-'), // 13.09.2000 -> 2000-09-13
       departmentId: doctorsQuery.departmentId,
       lpuCode: doctorsQuery.lpuCode,
       days: doctorsQuery.days || DAYS,
     },
   });
 
-  if (doctorsResult.success) {
+  if (doctorsResult.items) {
     return doctorsResult;
   }
 
-  throw new Error(`${doctorsResult.code}: ${doctorsResult.message}`);
+  throw new Error(`${status}: ${JSON.stringify(doctorsResult, null, 2)}`);
 };
 
 export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQuery) => {
@@ -48,8 +51,7 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
 
   if (!doctors.length) {
     throw new Error(
-      `Не удалось найти доктора с doctorId: ${doctorsQuery.doctorId || '--'}, departmentId: ${
-        doctorsQuery.departmentId
+      `Не удалось найти доктора с doctorId: ${doctorsQuery.doctorId || '--'}, departmentId: ${doctorsQuery.departmentId
       }, lpuCode: ${doctorsQuery.lpuCode}`,
     );
   }
@@ -59,16 +61,19 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
 
 export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
   let schedules: Schedule[] = doctors.map((doctor) => {
-    const workingDays = [...getWorkingDays(doctor.week1), ...getWorkingDays(doctor.week2)];
+    // const workingDays = [...getWorkingDays(doctor.week1), ...getWorkingDays(doctor.week2)];
+    const workingDays = getWorkingDays(doctor.schedule)
+    // console.log({ doctor })
+    const days = workingDays.map((day) => ({
+      count_tickets: day.count_tickets,
+      date: day.date,
+    }))
     return {
       id: doctor.id,
       displayName: doctor.displayName,
       person_id: doctor.person_id,
-      count_tickets: doctor.count_tickets,
-      days: workingDays.map((day) => ({
-        count_tickets: day.count_tickets,
-        date_short: day.date_short,
-      })),
+      count_tickets: sumBy(days, day => day.count_tickets),
+      days,
     };
   });
 
@@ -86,10 +91,11 @@ export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
 
 export const getFollowMessages = (schedules: Schedule[]) =>
   schedules.map((schedule) => {
+    // console.log({ schedule })
     const message = [
       `(_${shortPersonId(schedule.person_id)}_) ${schedule.displayName}`,
       `Свободных мест: *${schedule.count_tickets}*`,
-      `*Дни:*\n${schedule.days.map((x) => `_${x.date_short}_ (${x.count_tickets} талонов)`).join('\n')}`,
+      `*Дни:*\n${schedule.days.map((x) => `_${x.date}_ (${x.count_tickets} талонов)`).join('\n')}`,
     ].join('\n');
     return message;
   });
