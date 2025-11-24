@@ -50,10 +50,7 @@ export const initialize = () => {
           `Аутентификация прошла успешно.`,
           `Ваш personGuid: ${authResult.personGuid}`,
           `Ваш врач: ${doctor ? [doctor.lastname, doctor.name, doctor.surname].join(' ') : '--'}`,
-          ...(doctor ? [
-            `Ваша больница: ${doctor.lpu_name}`,
-            `Код больницы: *${doctor.lpu_code}*`,
-          ] : []),
+          ...(doctor ? [`Ваша больница: ${doctor.lpu_name}`, `Код больницы: *${doctor.lpu_code}*`] : []),
         ].join('\n'),
       );
 

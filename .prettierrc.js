@@ -4,11 +4,12 @@ module.exports = {
   useTabs: false,
   semi: true,
   singleQuote: true,
-  quoteProps: 'as-needed',
+  quoteProps: 'consistent',
   trailingComma: 'all',
   bracketSpacing: true,
   arrowParens: 'always',
   endOfLine: 'lf',
   importOrder: ['^[~.]'],
   importOrderSeparation: true,
+  importOrderParserPlugins: ['typescript', 'decorators-legacy'],
 };

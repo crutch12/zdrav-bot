@@ -37,7 +37,7 @@ const server = serve(async (req, res) => {
   return 'Hello world';
 });
 
-// @ts-ignore // Типы врут
+// @ts-expect-error // Типы врут
 server.listen(port, host, () => {
   console.log(`Server is running on http://${host}:${port}`);
 });

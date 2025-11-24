@@ -27,6 +27,7 @@ export const getChats = async (): Promise<Chat[]> => {
 
 export const createChat = (userId: number) => {
   const docRef = db.collection('chats').doc(`${userId}`);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return docRef.set({}).then((result) => {
     return new Chat(userId, {});
   });

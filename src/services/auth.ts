@@ -15,15 +15,12 @@ export const authByPolis = async (chat: Chat) => {
   // polisFormData.append('number', chat.polis.pol);
   // polisFormData.append('birthday', chat.polis.birthday.split('.').reverse().join('-'));
 
-  const { data: authResult, status } = await chat.axios.get<AuthResult>(
-    '/api/v2/emias/iemk/personal',
-    {
-      params: {
-        // number: chat.polis.number,
-        // birthday: chat.polis.birthday.split('.').reverse().join('-'), // 13.09.2000 -> 2000-09-13
-      }
-    }
-  );
+  const { data: authResult, status } = await chat.axios.get<AuthResult>('/api/v2/emias/iemk/personal', {
+    params: {
+      // number: chat.polis.number,
+      // birthday: chat.polis.birthday.split('.').reverse().join('-'), // 13.09.2000 -> 2000-09-13
+    },
+  });
 
   // console.log({ authResult })
 

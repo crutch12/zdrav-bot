@@ -51,7 +51,8 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
 
   if (!doctors.length) {
     throw new Error(
-      `Не удалось найти доктора с doctorId: ${doctorsQuery.doctorId || '--'}, departmentId: ${doctorsQuery.departmentId
+      `Не удалось найти доктора с doctorId: ${doctorsQuery.doctorId || '--'}, departmentId: ${
+        doctorsQuery.departmentId
       }, lpuCode: ${doctorsQuery.lpuCode}`,
     );
   }
@@ -62,17 +63,17 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
 export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
   let schedules: Schedule[] = doctors.map((doctor) => {
     // const workingDays = [...getWorkingDays(doctor.week1), ...getWorkingDays(doctor.week2)];
-    const workingDays = getWorkingDays(doctor.schedule)
+    const workingDays = getWorkingDays(doctor.schedule);
     // console.log({ doctor })
     const days = workingDays.map((day) => ({
       count_tickets: day.count_tickets,
       date: day.date,
-    }))
+    }));
     return {
       id: doctor.id,
       displayName: doctor.displayName,
       person_id: doctor.person_id,
-      count_tickets: sumBy(days, day => day.count_tickets),
+      count_tickets: sumBy(days, (day) => day.count_tickets),
       days,
     };
   });

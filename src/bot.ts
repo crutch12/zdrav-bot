@@ -30,9 +30,9 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'));
 // handle all telegram updates with HTTPs trigger
 const echoBot = async (body, response) => {
   console.log('Incoming message', body);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return await bot.handleUpdate(body, response).then((rv) => {
     // if it's not a request from the telegram, rv will be undefined, but we should respond with 200
-    // @ts-ignore
     // return !rv && response.sendStatus(200);
   });
 };

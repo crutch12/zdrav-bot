@@ -82,7 +82,7 @@ export class Chat {
       params: {
         number: this.polis.number,
         birthday: this.polis.birthday.split('.').reverse().join('-'), // 13.09.2000 -> 2000-09-13
-      }
+      },
     });
   }
 
