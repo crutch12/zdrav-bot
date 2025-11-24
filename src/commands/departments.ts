@@ -34,7 +34,10 @@ export const initialize = () => {
       return ctx.replyWithMarkdown(StepMessages.doctors, {
         ...Markup.inlineKeyboard(
           departments.items.map((department) =>
-            Markup.button.callback(`${department.code}`, `${doctors.command} ${department.code}`),
+            Markup.button.callback(
+              `${department.code} (${_.truncate(department.title, { length: 10, omission: '' })})`,
+              `${doctors.command} ${department.code}`,
+            ),
           ),
           {
             columns: 4,
