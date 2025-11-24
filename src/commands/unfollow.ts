@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { bot } from '../bot';
 import { Chat } from '../lib/chat';
 import { parseCommandMessage } from '../utils';
@@ -27,6 +28,10 @@ export const initialize = () => {
       return ctx.reply(`Подписка ${subscription.id} успешно удалена`);
     } catch (err) {
       console.error(err);
+      if (axios.isAxiosError(err)) {
+        // @ts-expect-error // message unknown
+        return ctx.reply(`(Ошибка!) ${err.response?.data?.message || err.message}`);
+      }
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

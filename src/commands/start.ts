@@ -13,15 +13,15 @@ const Mocks = {
 };
 
 export const StepMessages = {
-  polis: ['1) Указываем полис (нового типа) и дату рождения:', `*/polis ${Mocks.polis} ${Mocks.birthday}*`].join('\n'),
-  departments: ['2) Получаем список доступных специальностей:', '*/departments*'].join('\n'),
+  polis: ['1) Укажите полис (нового типа) и дату рождения:', `*/polis ${Mocks.polis} ${Mocks.birthday}*`].join('\n'),
+  departments: ['2) Запросите список доступных специальностей:', '*/departments*'].join('\n'),
   doctors: [
-    `3) Из специальностей выбираем номер нужной (_например ${Mocks.departmentId}_) и запрашиваем список врачей:`,
+    `3) Из специальностей выберите номер нужной (_например ${Mocks.departmentId}_) и запросите список врачей:`,
     `*/doctors ${Mocks.departmentId}*`,
   ].join('\n'),
   follow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId) =>
     [
-      `4) *Создание подписки.*\nИз врачей берём номер нужной больницы (_например ${lpuCode}_) и номер специальности (из шага 2):`,
+      `4) *Создание подписки.*\nИз врачей выберите номер нужной больницы (_например ${lpuCode}_) и номер специальности (из шага 2):`,
       `*/follow ${lpuCode} ${departmentId}*`,
     ].join('\n'),
   follow2: [
@@ -57,6 +57,7 @@ export const START_MESSAGE = [
   `${StepMessages.follow2}`,
   '',
   '5) Готово. Можно подписаться сразу на несколько больниц + специальностей',
+  '*Наличие новых талонов проверяется раз в 10 минут.*',
   '',
   `${StepMessages.unfollow(Mocks.lpuCode, Mocks.departmentId)}`,
   '',

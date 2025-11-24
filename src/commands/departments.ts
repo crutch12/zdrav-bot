@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { StepMessages } from './start';
 import { Markup } from 'telegraf';
 import * as doctors from './doctors';
+import axios from 'axios';
 
 export const command = 'departments';
 export const description = 'Посмотреть список доступных специальностей';
@@ -42,6 +43,10 @@ export const initialize = () => {
       });
     } catch (err) {
       console.error(err);
+      if (axios.isAxiosError(err)) {
+        // @ts-expect-error // message unknown
+        return ctx.reply(`(Ошибка!) ${err.response?.data?.message || err.message}`);
+      }
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

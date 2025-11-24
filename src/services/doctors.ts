@@ -4,8 +4,9 @@ import { Chat, Schedule } from '../lib/chat';
 import { Doctor, DoctorsResult, Week1 } from '../types/Doctor';
 import { shortPersonId } from '../utils';
 import { sumBy } from 'lodash';
+import { format } from 'date-fns';
 
-const DAYS = 14;
+const DAYS = 21;
 
 export const DOC_WEEKEND_TYPE = 0;
 export const getWorkingDays = (days: Week1[]) => days.filter((x) => x.docBusyType.type !== DOC_WEEKEND_TYPE);
@@ -96,7 +97,7 @@ export const getFollowMessages = (schedules: Schedule[]) =>
     const message = [
       `(_${shortPersonId(schedule.person_id)}_) ${schedule.displayName}`,
       `Свободных мест: *${schedule.count_tickets}*`,
-      `*Дни:*\n${schedule.days.map((x) => `_${x.date}_ (${x.count_tickets} талонов)`).join('\n')}`,
+      `*Дни:*\n${schedule.days.map((x) => `_${format(new Date(x.date), 'dd.MM.yyyy')}_ (${x.count_tickets} талонов)`).join('\n')}`,
     ].join('\n');
     return message;
   });

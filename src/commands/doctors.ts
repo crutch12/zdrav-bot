@@ -6,6 +6,7 @@ import { StepMessages } from './start';
 import { parseCommandMessage, shortPersonId } from '../utils';
 import { Markup } from 'telegraf';
 import * as follow from './follow';
+import axios from 'axios';
 
 export const command = 'doctors';
 export const description = 'Посмотреть список врачей нужной специальности';
@@ -67,6 +68,10 @@ export const initialize = () => {
       );
     } catch (err) {
       console.error(err);
+      if (axios.isAxiosError(err)) {
+        // @ts-expect-error // message unknown
+        return ctx.reply(`(Ошибка!) ${err.response?.data?.message || err.message}`);
+      }
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

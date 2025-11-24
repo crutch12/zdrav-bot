@@ -4,6 +4,7 @@ import { Chat } from '../lib/chat';
 import { parseCommandMessage } from '../utils';
 import { Markup } from 'telegraf';
 import * as unfollow from './unfollow';
+import axios from 'axios';
 
 export const command = 'follow';
 export const description =
@@ -54,6 +55,10 @@ export const initialize = () => {
       });
     } catch (err) {
       console.error(err);
+      if (axios.isAxiosError(err)) {
+        // @ts-expect-error // message unknown
+        return ctx.reply(`(Ошибка!) ${err.response?.data?.message || err.message}`);
+      }
       return ctx.reply(`(Ошибка!) ${err.message}`);
     }
   });

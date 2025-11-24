@@ -6,8 +6,9 @@ const FIRE_STORE_ACCOUNT_KEY = process.env.FIRE_STORE_ACCOUNT_KEY;
 
 admin.initializeApp({
   credential: admin.credential.cert(JSON.parse(FIRE_STORE_ACCOUNT_KEY)),
-  projectId: 'zdrav-mosreg-test',
-  databaseURL: 'https://zdrav-mosreg-test-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: process.env.FIRE_STORE_PROJECT_ID || 'zdrav-mosreg-test',
+  databaseURL:
+    process.env.FIRE_STORE_DATABASE_URL || 'https://zdrav-mosreg-test-default-rtdb.europe-west1.firebasedatabase.app',
 });
 
 const db = admin.firestore();
@@ -47,7 +48,6 @@ export const getChat = async (userId) => {
       .then((snapshot) => snapshot.docs.map((x) => x.data()))) as Subscription[],
     polis: value && value.polis,
     authResult: value && value.authResult,
-    // initialCookies: value && value.initialCookies,
   });
   return chat;
 };
@@ -57,11 +57,9 @@ export const updateChat = (
   {
     polis,
     authResult,
-    // initialCookies,
   }: {
     polis?: Polis | null;
     authResult?: AuthResult | null;
-    // initialCookies?: string[] | null
   },
 ) => {
   console.info(chat.userId);
@@ -72,13 +70,9 @@ export const updateChat = (
   if (typeof authResult !== 'undefined') {
     chat.setAuthResult(authResult);
   }
-  // if (typeof initialCookies !== 'undefined') {
-  //   chat.setInitialCookies(initialCookies);
-  // }
   return docRef.update({
     polis,
     authResult,
-    // initialCookies,
   });
 };
 
