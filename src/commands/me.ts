@@ -15,6 +15,18 @@ export const initialize = () => {
         `Номер полиса: \`${chat.polis.number}\``,
         `Дата рождения: \`${chat.polis.birthday}\``,
         `Аутентификация пройдена: ${chat.authResult ? 'Да' : '*Нет*'}`,
+        ...(chat.authResult
+          ? [
+              `Ваш personGuid: \`${chat.authResult.personGuid}\``,
+              `Ваш врач: ${chat.authResult.doctor ? [chat.authResult.doctor.lastname, chat.authResult.doctor.name, chat.authResult.doctor.surname].join(' ') : '(нет)'}`,
+              ...(chat.authResult.doctor
+                ? [
+                    `Ваша больница: ${chat.authResult.doctor.lpu_name}`,
+                    `Код больницы: *${chat.authResult.doctor.lpu_code}*`,
+                  ]
+                : []),
+            ]
+          : []),
       ].join('\n'),
     );
   });

@@ -13,11 +13,30 @@ export const initialize = () => {
   bot.command(command, async (ctx) => {
     const chat = await Chat.getByUserId(ctx.message.from.id);
 
-    const [polisRaw, birthday] = parseCommandMessage(ctx.message.text);
+    const parsed = parseCommandMessage(ctx.message.text);
 
-    if (!polisRaw || !birthday) {
+    const polisRaw = parsed
+      .slice(0, parsed.length - 1)
+      .join('')
+      .replace(/-/g, '');
+    const birthday = parsed[parsed.length - 1];
+
+    if (!polisRaw || !birthday || !birthday.match(/\d\d\.\d\d\.\d\d\d\d/)) {
       return ctx.replyWithMarkdown(
-        '(Ошибка!) Необходимо ввести полис в формате:\n/polis *5040200838017611 01.12.2000*',
+        [
+          'Для указания полиса необходимо ввести номер полиса/свидетельства и дату рождения в любом из форматов:',
+          '',
+          '*Нового образца*',
+          '/polis 5040 2008 3801 7611 01.12.2000',
+          '',
+          '*Старого образца*',
+          '/polis 10-10 123789 01.12.2000',
+          '',
+          '*Временное свидетельство*',
+          '/polis 111 3334444 01.12.2000',
+          '',
+          'Лишние пробелы и дефисы игнорируются',
+        ].join('\n'),
       );
     }
 

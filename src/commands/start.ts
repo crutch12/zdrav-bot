@@ -13,25 +13,26 @@ const Mocks = {
 };
 
 export const StepMessages = {
-  polis: ['1) Укажите полис (нового типа) и дату рождения:', `*/polis ${Mocks.polis} ${Mocks.birthday}*`].join('\n'),
+  polis: ['1) Укажите номер полиса/свидетельства и дату рождения:', `*/polis ${Mocks.polis} ${Mocks.birthday}*`].join(
+    '\n',
+  ),
   departments: ['2) Запросите список доступных специальностей:', '*/departments*'].join('\n'),
   doctors: [
     `3) Из специальностей выберите номер нужной (_например ${Mocks.departmentId}_) и запросите список врачей:`,
-    `*/doctors ${Mocks.departmentId}*`,
+    `\`/doctors ${Mocks.departmentId}\` (скопируйте в чат)`,
   ].join('\n'),
-  follow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId) =>
+  follow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortPersonId(Mocks.doctorId)) =>
     [
-      `4) *Создание подписки.*\nИз врачей выберите номер нужной больницы (_например ${lpuCode}_) и номер специальности (из шага 2):`,
-      `*/follow ${lpuCode} ${departmentId}*`,
+      `4) *Создание подписки.*`,
+      'Используйте кнопки подписки под каждым из сообщений для выбора врача, на которого хотите подписаться',
+      '',
+      'Либо выберите нужных врачей и по очереди скопируйте и отправьте команды подписки в чат',
+      `Например: \`/follow ${lpuCode} ${departmentId} ${doctorId}\``,
     ].join('\n'),
-  follow2: [
-    `4.1) Можно подписаться на конкретного врача (_например ${shortPersonId(Mocks.doctorId)}_)`,
-    `*/follow ${Mocks.lpuCode} ${Mocks.departmentId}* *${shortPersonId(Mocks.doctorId)}*`,
-  ].join('\n'),
-  unfollow: (lpuCode: string, departmentId: string, doctorId?: string) =>
+  unfollow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortPersonId(Mocks.doctorId)) =>
     [
-      'Чтобы отписаться от созданной подписки:',
-      `*/unfollow ${lpuCode} ${departmentId}${doctorId ? ` ${doctorId}` : ''}*`,
+      'Отписаться от созданной подписки можно через /unfollow:',
+      `Например: \`/unfollow ${lpuCode} ${departmentId} ${doctorId}\``,
     ].join('\n'),
 };
 
@@ -52,19 +53,17 @@ export const START_MESSAGE = [
   '',
   `${StepMessages.doctors}`,
   '',
-  `${StepMessages.follow(Mocks.lpuCode, Mocks.departmentId)}`,
-  '',
-  `${StepMessages.follow2}`,
+  `${StepMessages.follow(Mocks.lpuCode, Mocks.departmentId, shortPersonId(Mocks.doctorId))}`,
   '',
   '5) Готово. Можно подписаться сразу на несколько больниц + специальностей',
   '*Наличие новых талонов проверяется раз в 10 минут.*',
   '',
-  `${StepMessages.unfollow(Mocks.lpuCode, Mocks.departmentId)}`,
+  `${StepMessages.unfollow(Mocks.lpuCode, Mocks.departmentId, shortPersonId(Mocks.doctorId))}`,
   '',
   'Помощь: */help*',
-  'Список активных подписок: */list*',
+  'Список активных подписок: */list* (через него можно отписаться)',
   'Посмотреть введённые данные: */me*',
-  'Удалить введённые данные и подписки: */end*',
+  'Удалить все введённые данные и подписки: */end*',
 ].join('\n');
 
 export const initialize = () => {
