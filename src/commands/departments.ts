@@ -35,12 +35,12 @@ export const initialize = () => {
         ...Markup.inlineKeyboard(
           departments.items.map((department) =>
             Markup.button.callback(
-              `${department.code} (${_.truncate(department.title, { length: 10, omission: '' })})`,
+              `${department.code} (${_.truncate(department.title, { length: 15, omission: '.' })})`,
               `${doctors.command} ${department.code}`,
             ),
           ),
           {
-            columns: 4,
+            columns: 3,
           },
         ),
       });
