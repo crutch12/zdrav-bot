@@ -1,7 +1,7 @@
 // GET https://zdrav.mosreg.ru/api/v2/emias/iemk/doctors?number=&birthday=&departmentId=&days=&doctorId=
 
 import { Chat, Schedule } from '../lib/chat';
-import { Doctor, DoctorsResult, Week1 } from '../types/Doctor';
+import { Doctor, DoctorsResult, Schedule as DoctorSchedule } from '../types/Doctor';
 import { shortId } from '../utils';
 import { sumBy } from 'lodash';
 import { format } from 'date-fns';
@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 const DAYS = 21;
 
 export const DOC_WEEKEND_TYPE = 0;
-export const getWorkingDays = (days: Week1[]) => days.filter((x) => x.docBusyType.type !== DOC_WEEKEND_TYPE);
+export const getWorkingDays = (days: DoctorSchedule[]) => days.filter((x) => x.docBusyType.type !== DOC_WEEKEND_TYPE);
 export interface DoctorsQuery {
   departmentId: string;
   lpuCode?: string;

@@ -1,11 +1,110 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export interface Department {
-  nid: string;
+export interface AuthResult {
+  doctor: Doctor | null;
+  lpu: Lpu[];
+  area: Area | null;
+  personGuid: string;
+}
+
+export interface Lpu {
+  type: string[];
+  full_name: string;
+  city: string;
+  email: string;
+  site: string;
+  accessibility: boolean;
+  isCallDocHome: boolean;
+  isWaitingList: boolean;
+  latitude: string;
+  longitude: string;
+  rating_item?: RatingItem;
+  isBlackLabel: boolean;
+  id: string;
   title: string;
   code: string;
-  uid: string;
-  created_at: string;
-  updated_at: string;
+  children: boolean;
+  parent: Parent;
+  isChildrenPoliclinic: boolean;
+  fullAddress: string;
+  worktimes: Worktimes;
+  rating?: string;
+  phone: string;
+}
+
+export interface RatingItem {
+  queue: Queue;
+  result: Result;
+  attitude: Attitude;
+  cleanliness: Cleanliness;
+}
+
+export interface Queue {
+  displayName: string;
+  avg: number;
+  vote_count: number;
+  summa: number;
+  detail_1: number;
+  detail_2: number;
+  detail_3: number;
+  detail_4: number;
+  detail_5: number;
+}
+
+export interface Result {
+  displayName: string;
+  avg: number;
+  vote_count: number;
+  summa: number;
+  detail_1: number;
+  detail_2: number;
+  detail_3: number;
+  detail_4: number;
+  detail_5: number;
+}
+
+export interface Attitude {
+  displayName: string;
+  avg: number;
+  vote_count: number;
+  summa: number;
+  detail_1: number;
+  detail_2: number;
+  detail_3: number;
+  detail_4: number;
+  detail_5: number;
+}
+
+export interface Cleanliness {
+  displayName: string;
+  avg: number;
+  vote_count: number;
+  summa: number;
+  detail_1: number;
+  detail_2: number;
+  detail_3: number;
+  detail_4: number;
+  detail_5: number;
+}
+
+export interface Parent {
+  guid: string;
+  name: string;
+  mcod: string;
+}
+
+export interface Worktimes {
+  monday: string;
+  tuesday: string;
+  wednesday: string;
+  thursday: string;
+  friday: string;
+  saturday: string;
+  sunday: string;
+}
+
+export interface Area {
+  name: string;
+  number: string;
+  type: string;
 }
 
 export interface Doctor {
@@ -19,76 +118,6 @@ export interface Doctor {
   room: string;
   lpu_name: string;
   lpu_address: string;
-  phone?: any;
-  department: Department;
-}
-
-export interface Worktimes {
-  monday: string;
-  tuesday: string;
-  wednesday: string;
-  thursday: string;
-  friday: string;
-  saturday: string;
-  sunday: string;
-}
-
-export interface Lpu {
-  id: string;
-  external_id?: any;
-  med_inst_type_id: string;
-  territory_id?: any;
-  region: string;
-  full_title: string;
-  title: string;
-  department_name: string;
-  phones: string;
-  ogrn?: any;
-  mcod: string;
-  address: string;
-  child: string;
-  aid_cases?: any;
-  management_info: string;
-  requisits: string;
-  dispanser: string;
-  dependancy?: any;
-  departments_info?: any;
-  price_list?: any;
-  contacts?: any;
-  worktime: string;
-  has_ambulance: string;
-  has_trauma: string;
-  photo_fid?: any;
-  children_polyclinic: string;
-  latitude: string;
-  longitude: string;
-  active: string;
-  code: string;
-  worktimes: Worktimes;
-  email: string;
-  phone: string;
-  site: string;
-  rating: number;
-  city_id: string;
-  uid: string;
-  accessibility: string;
-  children: string;
-  is_call_doctor_home: string;
-  is_waiting_list: string;
-  created_at?: any;
-  updated_at: string;
-  med_inst_types: string;
-}
-
-export interface Area {
-  name: string;
-  number: string;
-  type: string;
-}
-
-export interface AuthResult {
-  doctor: Doctor | null;
-  lpu: Lpu[];
-  area: Area | null;
-  personGuid: string;
+  phone?: unknown;
+  department: unknown;
 }

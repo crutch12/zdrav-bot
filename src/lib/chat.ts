@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as https from 'https';
 
 import { Command } from '../types/Command';
-import { AuthResult, Department } from '../types/Auth';
+import { AuthResult } from '../types/Auth';
 import { DoctorsQuery } from '../services/doctors';
 import { createChat, getChat, getSubscriptions, removeSubscription, setSubscription, updateChat } from '../db';
 import { authByPolis } from '../services/auth';
@@ -27,7 +27,6 @@ export type Subscription = {
   query: DoctorsQuery;
   schedules: Schedule[];
   doctor?: Doctor;
-  department?: Department;
   lpu?: Lpu;
 };
 
