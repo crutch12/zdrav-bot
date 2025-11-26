@@ -22,7 +22,13 @@ export const initialize = () => {
       }
 
       return ctx.replyWithMarkdown(
-        'Список активных подписок:\n' + subscriptions.map((sub) => `*${sub.id}*`).join('\n'),
+        'Список активных подписок:\n' +
+          subscriptions
+            .map(
+              (subscription) =>
+                `- 🧑‍⚕️ ${subscription.doctor?.displayName} (${subscription.doctor?.separation}) (\`${subscription.id}\`)`,
+            )
+            .join('\n'),
         {
           ...Markup.inlineKeyboard(
             subscriptions.map((subscription) =>

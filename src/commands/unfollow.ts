@@ -2,8 +2,9 @@ import axios from 'axios';
 import { bot } from '../bot';
 import { Chat } from '../lib/chat';
 import { parseCommandMessage } from '../utils';
-import { Context } from 'telegraf';
+import { Context, Markup } from 'telegraf';
 import { CommandHandlerParams } from '../types/commands';
+import * as followCommand from './follow';
 
 export const command = 'unfollow';
 export const description = 'Удалить созданную подписку';
@@ -20,16 +21,20 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
   try {
     const subscription = await chat.removeSubscription({ lpuCode, departmentId, doctorId });
 
-    await ctx.editMessageReplyMarkup({
-      inline_keyboard: [],
-    });
-
     if (params.answerCb) {
       await params.answerCb();
     }
 
-    return await ctx.replyWithMarkdown(
+    await params.answerWithMarkdown(
       `Подписка на 🧑‍⚕️ ${subscription.doctor?.displayName} (${subscription.doctor?.separation}) \`${subscription.id}\` успешно удалена 🗑️`,
+      {
+        ...Markup.inlineKeyboard([
+          Markup.button.callback(
+            `🔁 Вернуть подписку ${subscription.id}`,
+            `${followCommand.command} ${subscription.id}`,
+          ),
+        ]),
+      },
     );
   } catch (err) {
     console.error(err);

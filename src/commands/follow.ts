@@ -54,8 +54,13 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
 
   const doctorsQuery = { departmentId, lpuCode, doctorId };
 
+  const subId = Chat.getSubscriptionKey(doctorsQuery);
+
   try {
-    await ctx.replyWithMarkdown(`⏳ Создаём подписку \`${Chat.getSubscriptionKey(doctorsQuery)}\``);
+    const subscriptions = await chat.getAllSubscriptions();
+    const foundSubscription = subscriptions.find((x) => x.id === subId);
+
+    await ctx.replyWithMarkdown(`⏳ ${foundSubscription ? 'Обновляем' : 'Создаём'} подписку \`${subId}\``);
 
     const { messages, subscription } = await generateFollowMessages(chat, doctorsQuery);
 
@@ -66,7 +71,7 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
     await Promise.all(messages.map((message) => ctx.replyWithMarkdown(message)));
 
     return await ctx.replyWithMarkdown(
-      `Подписка на 🧑‍⚕️ ${subscription.doctor?.displayName} (${subscription.doctor?.separation}) успешно создана.\nId подписки: \`${subscription.id}\``,
+      `Подписка на 🧑‍⚕️ ${subscription.doctor?.displayName} (${subscription.doctor?.separation}) успешно ${foundSubscription ? 'обновлена' : 'создана'}.\nId подписки: \`${subscription.id}\``,
       {
         ...Markup.inlineKeyboard([
           Markup.button.callback(`🗑️ Удалить подписку ${subscription.id}`, `${unfollow.command} ${subscription.id}`),
