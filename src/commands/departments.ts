@@ -11,6 +11,28 @@ import { CommandHandlerParams } from '../types/commands';
 export const command = 'departments';
 export const description = 'Посмотреть список доступных специальностей';
 
+const getDepartmentsMessages = async (chat: Chat) => {
+  const departments = await getDepartments(chat);
+
+  const messages = departments.items.map((item) => {
+    const message = `\`${item.code}\` - ${item.title.slice(0, 60)}`;
+
+    const buttons = [
+      Markup.button.callback(
+        `${item.code} (${_.truncate(item.title, { length: 15, omission: '.' })})`,
+        `${hospitals.command} ${item.code}`,
+      ),
+    ];
+    return {
+      message,
+      buttons,
+    };
+  });
+
+  const chunks = _.chunk(messages, 70);
+  return { chunks, departments };
+};
+
 const handle = async (ctx: Context, params: CommandHandlerParams) => {
   const chat = await Chat.getByUserId(params.id);
 
@@ -19,15 +41,7 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
   }
 
   try {
-    const departments = await getDepartments(chat);
-    const messages = departments.items.map((item) => `*${item.code}* - ${item.title.slice(0, 60)}`);
-    const chunks = _.chunk(messages, 70);
-    const buttons = departments.items.map((department) =>
-      Markup.button.callback(
-        `${department.code} (${_.truncate(department.title, { length: 15, omission: '.' })})`,
-        `${hospitals.command} ${department.code}`,
-      ),
-    );
+    const { chunks } = await getDepartmentsMessages(chat);
 
     if (chunks.length === 0) {
       return params.answer(`Список специальностей *пуст*. Похоже вам не доступен ни один врач`);
@@ -38,7 +52,7 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
     }
 
     for (const chunk of chunks) {
-      let message = chunk.map((ch) => ch).join('\n');
+      let message = chunk.map((ch) => ch.message).join('\n');
       const idx = chunks.indexOf(chunk);
       const [isFirts, isLast] = [idx === 0, idx === chunks.length - 1];
       if (isFirts) {
@@ -47,11 +61,14 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
       if (isLast) {
         message = [message, StepMessages.doctors].join('\n\n');
       }
-      const reply = isLast ? params.answerWithMarkdown.bind(ctx) : ctx.replyWithMarkdown;
+      const reply = isLast ? params.answerWithMarkdown.bind(ctx) : ctx.replyWithMarkdown.bind(ctx);
       await reply(message, {
-        ...Markup.inlineKeyboard(buttons, {
-          columns: 3,
-        }),
+        ...Markup.inlineKeyboard(
+          chunk.flatMap((ch) => ch.buttons),
+          {
+            columns: 3,
+          },
+        ),
       });
     }
   } catch (err) {

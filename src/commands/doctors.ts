@@ -93,7 +93,7 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
           ),
         ].join('\n\n');
       }
-      const reply = isLast ? params.answerWithMarkdown.bind(ctx) : ctx.replyWithMarkdown;
+      const reply = isLast ? params.answerWithMarkdown.bind(ctx) : ctx.replyWithMarkdown.bind(ctx);
       await reply(message, {
         ...Markup.inlineKeyboard(
           [

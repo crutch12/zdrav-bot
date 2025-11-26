@@ -72,7 +72,7 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
       if (isLast) {
         message = [message, StepMessages.hospitals(hospitals[0]?.mcod, departmentId)].join('\n\n');
       }
-      const reply = isLast ? params.answerWithMarkdown.bind(ctx) : ctx.replyWithMarkdown;
+      const reply = isLast ? params.answerWithMarkdown.bind(ctx) : ctx.replyWithMarkdown.bind(ctx);
       await reply(message, {
         ...Markup.inlineKeyboard(
           [
