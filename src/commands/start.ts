@@ -18,21 +18,23 @@ export const StepMessages = {
   ),
   departments: ['2) Запросите список доступных специальностей:', '*/departments*'].join('\n'),
   doctors: [
-    `3) Из специальностей выберите номер нужной (_например ${Mocks.departmentId}_) и запросите список больниц:`,
-    `\`/hospitals ${Mocks.departmentId}\` (скопируйте в чат)`,
+    `3) Из специальностей выберите номер нужной (_например ${Mocks.departmentId}_) и запросите список больниц`,
+    // `\`/hospitals ${Mocks.departmentId}\` (скопируйте в чат)`,
   ].join('\n'),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   hospitals: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId) =>
     [
-      `3.1) Из больниц выберите номер нужной и запросите список врачей:`,
-      `\`/doctors ${departmentId} ${lpuCode}\` (скопируйте в чат)`,
+      `3.1) Из больниц выберите номер нужной (_например ${lpuCode}_) и запросите список врачей`,
+      // `\`/doctors ${departmentId} ${lpuCode}\` (скопируйте в чат)`,
     ].join('\n'),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   follow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortId(Mocks.doctorId)) =>
     [
       `4) *Создание подписки.*`,
       'Используйте кнопки подписки под каждым из сообщений для выбора врача, на которого хотите подписаться',
-      '',
-      'Либо выберите нужных врачей и по очереди и отправьте команды подписки в чат',
-      `Например: \`/follow ${lpuCode} ${departmentId} ${doctorId}\``,
+      // '',
+      // 'Либо выберите нужных врачей и по очереди и отправьте команды подписки в чат',
+      // `Например: \`/follow ${lpuCode} ${departmentId} ${doctorId}\``,
     ].join('\n'),
   unfollow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortId(Mocks.doctorId)) =>
     [

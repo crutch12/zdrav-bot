@@ -89,6 +89,7 @@ export const initialize = () => {
       id: ctx.message.from.id,
       text: ctx.message.text,
       answer: ctx.reply.bind(ctx),
+      answerWithMarkdown: ctx.replyWithMarkdown.bind(ctx),
     });
   });
   bot.action(new RegExp(`^${command}.*$`), async (ctx) => {
@@ -97,6 +98,7 @@ export const initialize = () => {
       text: ctx.match[0],
       answer: ctx.answerCbQuery.bind(ctx),
       answerCb: ctx.answerCbQuery.bind(ctx),
+      answerWithMarkdown: (text, extra) => ctx.editMessageText.bind(ctx)(text, { parse_mode: 'Markdown', ...extra }),
     });
   });
 };
