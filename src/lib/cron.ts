@@ -41,7 +41,7 @@ export const run = async (bot: Telegraf) => {
         const query = subscription.query;
         console.info('Check sub', query);
         try {
-          const doctors = await getDoctorsWithSchedule(chat, query);
+          const { doctors } = await getDoctorsWithSchedule(chat, query);
           const schedules = getSchedules(doctors, true);
 
           const sumBefore = _.sumBy(subscription.schedules, (schedule) => schedule.count_tickets);
@@ -54,11 +54,14 @@ export const run = async (bot: Telegraf) => {
             const messages = getFollowMessages(schedules);
             await bot.telegram.sendMessage(
               chat.userId,
-              `(_${subscription.id}_) Появились новые места! Было ${sumBefore}, стало ${sumAfter}`,
+              [
+                `🎉 ${subscription.doctor?.displayName} - новые места! Было ${sumBefore}, стало ${sumAfter}`,
+                `[Записаться](https://zdrav.mosreg.ru/)`,
+              ].join('\n'),
               {
                 ...Markup.inlineKeyboard([
                   Markup.button.callback(
-                    `Удалить подписку ${subscription.id}`,
+                    `🗑️ Удалить подписку ${subscription.id}`,
                     `${unfollow.command} ${subscription.id}`,
                   ),
                 ]),
@@ -74,7 +77,10 @@ export const run = async (bot: Telegraf) => {
             );
           }
 
-          await chat.subscribeSchedules(schedules, subscription.query);
+          await chat.subscribeSchedules(schedules, subscription.query, {
+            doctor: subscription.doctor,
+            lpu: subscription.lpu,
+          });
         } catch (err) {
           console.error('Couldn\t check subscription.', `Chat: ${chat.userId}`, `Subscription: ${subscription.id}`);
           console.error(err);

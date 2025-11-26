@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import { Chat, Polis, Subscription } from '../lib/chat';
 import { AuthResult } from '../types/Auth';
 
-const FIRE_STORE_ACCOUNT_KEY = process.env.FIRE_STORE_ACCOUNT_KEY;
+const FIRE_STORE_ACCOUNT_KEY = process.env.FIRE_STORE_ACCOUNT_KEY!;
 
 admin.initializeApp({
   credential: admin.credential.cert(JSON.parse(FIRE_STORE_ACCOUNT_KEY)),
@@ -65,10 +65,10 @@ export const updateChat = (
   console.info(chat.userId);
   const docRef = db.collection('chats').doc(`${chat.userId}`);
   if (typeof polis !== 'undefined') {
-    chat.setPolis(polis);
+    chat.setPolis(polis!);
   }
   if (typeof authResult !== 'undefined') {
-    chat.setAuthResult(authResult);
+    chat.setAuthResult(authResult!);
   }
   return docRef.update({
     polis,
@@ -100,7 +100,7 @@ export const setSubscription = async (chat: Chat, subscription: Subscription) =>
   return subscription;
 };
 
-export const getSubscriptions = async (chat: Chat): Promise<Subscription[] | undefined> => {
+export const getSubscriptions = async (chat: Chat): Promise<Subscription[]> => {
   const docRef = db.collection('chats').doc(`${chat.userId}`);
   const subs = await docRef
     .collection('subscriptions')

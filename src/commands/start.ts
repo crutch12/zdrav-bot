@@ -1,5 +1,5 @@
 import { bot } from '../bot';
-import { shortPersonId } from '../utils';
+import { shortId } from '../utils';
 
 export const command = 'start';
 export const description = 'Начать';
@@ -18,18 +18,23 @@ export const StepMessages = {
   ),
   departments: ['2) Запросите список доступных специальностей:', '*/departments*'].join('\n'),
   doctors: [
-    `3) Из специальностей выберите номер нужной (_например ${Mocks.departmentId}_) и запросите список врачей:`,
-    `\`/doctors ${Mocks.departmentId}\` (скопируйте в чат)`,
+    `3) Из специальностей выберите номер нужной (_например ${Mocks.departmentId}_) и запросите список больниц:`,
+    `\`/hospitals ${Mocks.departmentId}\` (скопируйте в чат)`,
   ].join('\n'),
-  follow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortPersonId(Mocks.doctorId)) =>
+  hospitals: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId) =>
+    [
+      `3.1) Из больниц выберите номер нужной и запросите список врачей:`,
+      `\`/doctors ${departmentId} ${lpuCode}\` (скопируйте в чат)`,
+    ].join('\n'),
+  follow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortId(Mocks.doctorId)) =>
     [
       `4) *Создание подписки.*`,
       'Используйте кнопки подписки под каждым из сообщений для выбора врача, на которого хотите подписаться',
       '',
-      'Либо выберите нужных врачей и по очереди скопируйте и отправьте команды подписки в чат',
+      'Либо выберите нужных врачей и по очереди и отправьте команды подписки в чат',
       `Например: \`/follow ${lpuCode} ${departmentId} ${doctorId}\``,
     ].join('\n'),
-  unfollow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortPersonId(Mocks.doctorId)) =>
+  unfollow: (lpuCode = Mocks.lpuCode, departmentId = Mocks.departmentId, doctorId = shortId(Mocks.doctorId)) =>
     [
       'Отписаться от созданной подписки можно через /unfollow:',
       `Например: \`/unfollow ${lpuCode} ${departmentId} ${doctorId}\``,
@@ -53,12 +58,12 @@ export const START_MESSAGE = [
   '',
   `${StepMessages.doctors}`,
   '',
-  `${StepMessages.follow(Mocks.lpuCode, Mocks.departmentId, shortPersonId(Mocks.doctorId))}`,
+  `${StepMessages.follow(Mocks.lpuCode, Mocks.departmentId, shortId(Mocks.doctorId))}`,
   '',
   '5) Готово. Можно подписаться сразу на несколько больниц + специальностей',
   '*Наличие новых талонов проверяется раз в 10 минут.*',
   '',
-  `${StepMessages.unfollow(Mocks.lpuCode, Mocks.departmentId, shortPersonId(Mocks.doctorId))}`,
+  `${StepMessages.unfollow(Mocks.lpuCode, Mocks.departmentId, shortId(Mocks.doctorId))}`,
   '',
   'Помощь: */help*',
   'Список активных подписок: */list* (через него можно отписаться)',

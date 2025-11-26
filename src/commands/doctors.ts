@@ -3,7 +3,7 @@ import { Chat } from '../lib/chat';
 import { getDoctors } from '../services/doctors';
 import _ from 'lodash';
 import { StepMessages } from './start';
-import { parseCommandMessage, shortPersonId } from '../utils';
+import { parseCommandMessage, shortId } from '../utils';
 import { Context, Markup } from 'telegraf';
 import * as follow from './follow';
 import axios from 'axios';
@@ -12,25 +12,30 @@ import { CommandHandlerParams } from '../types/commands';
 export const command = 'doctors';
 export const description = 'Посмотреть список врачей нужной специальности';
 
-const getDoctorsMessages = async (chat: Chat, departmentId: string) => {
-  const doctors = await getDoctors(chat, { departmentId });
+const getDoctorsMessages = async (chat: Chat, departmentId: string, lpuCode?: string) => {
+  let doctors = await getDoctors(chat, { departmentId });
+
+  if (lpuCode) {
+    doctors.items = doctors.items.filter((item) => item.lpu_code === lpuCode);
+  }
+
   const messages = doctors.items.map((item) => {
     const message = [
       `🏥 ${item.lpu.name}`,
       `Код больницы: *${item.lpu_code}*`,
-      `*Список врачей:*`,
+      `*Список врачей/кабинетов:*`,
       item.doctors
         .map(
           (doctor) =>
-            `- ${doctor.displayName} (${doctor.separation}) (_${shortPersonId(doctor.person_id)}_)\nПодписка: \`/follow ${item.lpu_code} ${departmentId} ${shortPersonId(doctor.person_id)}\``,
+            `- ${doctor.person_id ? '🧑‍⚕️' : '🩺'} ${doctor.displayName} (${doctor.separation}) (\`${shortId(doctor.id)}\`)`,
         )
         .join('\n'),
     ].join('\n');
 
     const buttons = item.doctors.map((doctor) => {
       return Markup.button.callback(
-        `Подписаться ${_.truncate(item.lpu.name, { length: 15, omission: '.' })} ${doctor.displayName} (${item.lpu_code} - ${shortPersonId(doctor.person_id)})`,
-        `${follow.command} ${item.lpu_code} ${departmentId} ${shortPersonId(doctor.person_id)}`,
+        `${doctor.person_id ? '🧑‍⚕️' : '🩺'} ${_.truncate(doctor.displayName, { length: 25, omission: '.' })} (${item.lpu_code} - ${shortId(doctor.id)})`,
+        `${follow.command} ${item.lpu_code} ${departmentId} ${shortId(doctor.id)}`,
       );
     });
 
@@ -39,7 +44,7 @@ const getDoctorsMessages = async (chat: Chat, departmentId: string) => {
       buttons,
     };
   });
-  const chunks = _.chunk(messages, 1);
+  const chunks = _.chunk(messages, 5);
   return { chunks, doctors };
 };
 
@@ -50,24 +55,26 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
     return await params.answer('Необходима авторизация (через полис)');
   }
 
-  const [departmentId] = parseCommandMessage(params.text);
+  const [departmentId, lpuCode] = parseCommandMessage(params.text);
 
   if (!departmentId) {
     return params.answer('(Ошибка!) Нужно указать id специальности врача. См. /departments');
   }
 
   try {
-    const { chunks, doctors } = await getDoctorsMessages(chat, departmentId);
+    const { chunks, doctors } = await getDoctorsMessages(chat, departmentId, lpuCode);
 
     if (chunks.length === 0) {
-      return params.answer(`Не удалось найти врачей для специальности ${departmentId}`);
+      return params.answer(`Не удалось найти врачей для специальности ${departmentId} и больницы ${lpuCode}`);
     }
 
     if (params.answerCb) {
       await params.answerCb();
     }
 
-    await ctx.replyWithMarkdown(`*📋 Список врачей для специальности ${departmentId}*:`);
+    await ctx.replyWithMarkdown(
+      `*📋 Список врачей/кабинетов для специальности ${departmentId} и больницы ${lpuCode}*:`,
+    );
 
     await Promise.all(
       chunks.map((chunk) =>
@@ -86,7 +93,7 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
       StepMessages.follow(
         doctors.items[0]?.lpu_code,
         doctors.items[0]?.doctors[0]?.department,
-        doctors.items[0]?.doctors[0]?.id && shortPersonId(doctors.items[0]?.doctors[0]?.id),
+        doctors.items[0]?.doctors[0]?.id && shortId(doctors.items[0]?.doctors[0]?.id),
       ),
     );
   } catch (err) {

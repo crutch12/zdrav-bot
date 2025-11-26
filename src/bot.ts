@@ -11,7 +11,7 @@
 import { Telegraf } from 'telegraf';
 import { start } from './lib/cron';
 
-const bot = new Telegraf(process.env.TELEGRAM_TOKEN, { telegram: { webhookReply: true } });
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN!, { telegram: { webhookReply: true } });
 
 start(bot);
 // bot.launch().then(() => {
@@ -20,6 +20,7 @@ start(bot);
 // error handling
 bot.catch((err, ctx) => {
   console.error(err);
+  // @ts-expect-error // @TODO
   ctx.reply(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 

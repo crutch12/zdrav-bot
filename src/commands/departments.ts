@@ -4,7 +4,7 @@ import { Chat } from '../lib/chat';
 import _ from 'lodash';
 import { StepMessages } from './start';
 import { Markup } from 'telegraf';
-import * as doctors from './doctors';
+import * as hospitals from './hospitals';
 import axios from 'axios';
 
 export const command = 'departments';
@@ -36,7 +36,7 @@ export const initialize = () => {
           departments.items.map((department) =>
             Markup.button.callback(
               `${department.code} (${_.truncate(department.title, { length: 15, omission: '.' })})`,
-              `${doctors.command} ${department.code}`,
+              `${hospitals.command} ${department.code}`,
             ),
           ),
           {

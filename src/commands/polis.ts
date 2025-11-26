@@ -51,7 +51,7 @@ export const initialize = () => {
 
     await ctx.replyWithMarkdown(`Удалось сохранить Номер полиса (*${polisRaw}*) и Дату рождения (*${birthday}*)`);
 
-    await ctx.reply('Начинаем аутентификацию на портале госуслуг...');
+    await ctx.reply('Начинаем аутентификацию на портале mosreg...');
 
     try {
       const authResult = await authByPolis(chat);

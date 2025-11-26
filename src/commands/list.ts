@@ -26,7 +26,10 @@ export const initialize = () => {
         {
           ...Markup.inlineKeyboard(
             subscriptions.map((subscription) =>
-              Markup.button.callback(`Удалить подписку ${subscription.id}`, `${unfollow.command} ${subscription.id}`),
+              Markup.button.callback(
+                `🗑️ Удалить подписку ${subscription.id}`,
+                `${unfollow.command} ${subscription.id}`,
+              ),
             ),
             {
               columns: 1,

@@ -8,6 +8,7 @@ import * as end from './end';
 import * as help from './help';
 import * as list from './list';
 import * as me from './me';
+import * as hospitals from './hospitals';
 
 interface Command {
   command: string;
@@ -15,7 +16,19 @@ interface Command {
   initialize: () => void;
 }
 
-export const commands: Command[] = [start, help, polis, departments, doctors, follow, list, unfollow, end, me];
+export const commands: Command[] = [
+  start,
+  help,
+  polis,
+  departments,
+  doctors,
+  follow,
+  list,
+  unfollow,
+  end,
+  me,
+  hospitals,
+];
 
 const initializeCommands = () => {
   commands.forEach((command) => command.initialize());

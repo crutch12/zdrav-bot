@@ -28,7 +28,9 @@ const handle = async (ctx: Context, params: CommandHandlerParams) => {
       await params.answerCb();
     }
 
-    return await ctx.replyWithMarkdown(`Подписка *${subscription.id}* успешно удалена`);
+    return await ctx.replyWithMarkdown(
+      `Подписка на 🧑‍⚕️ ${subscription.doctor?.displayName} (${subscription.doctor?.separation}) \`${subscription.id}\` успешно удалена 🗑️`,
+    );
   } catch (err) {
     console.error(err);
     if (axios.isAxiosError(err)) {

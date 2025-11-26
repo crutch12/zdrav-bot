@@ -2,10 +2,11 @@ import axios from 'axios';
 import * as https from 'https';
 
 import { Command } from '../types/Command';
-import { AuthResult } from '../types/Auth';
+import { AuthResult, Department } from '../types/Auth';
 import { DoctorsQuery } from '../services/doctors';
 import { createChat, getChat, getSubscriptions, removeSubscription, setSubscription, updateChat } from '../db';
 import { authByPolis } from '../services/auth';
+import { Doctor, Lpu } from '../types/Doctor';
 
 export type Polis = {
   birthday: string;
@@ -17,7 +18,7 @@ export type Polis = {
 
 const BASE_URL = 'https://zdrav.mosreg.ru';
 
-const getKey = (...args: (string | number)[]) => {
+const getKey = (...args: (string | number | undefined)[]) => {
   return args.filter(Boolean).join('__');
 };
 
@@ -25,12 +26,15 @@ export type Subscription = {
   id: string;
   query: DoctorsQuery;
   schedules: Schedule[];
+  doctor?: Doctor;
+  department?: Department;
+  lpu?: Lpu;
 };
 
 export type Schedule = {
   id: string;
   displayName: string;
-  person_id: string;
+  doctorId: string;
   count_tickets: number;
   days: {
     count_tickets: number;
@@ -80,8 +84,8 @@ export class Chat {
       baseURL: BASE_URL,
       httpAgent: new https.Agent({ rejectUnauthorized: false }),
       params: {
-        number: this.polis.number,
-        birthday: this.polis.birthday.split('.').reverse().join('-'), // 13.09.2000 -> 2000-09-13
+        number: this.polis!.number,
+        birthday: this.polis!.birthday.split('.').reverse().join('-'), // 13.09.2000 -> 2000-09-13
       },
     });
   }
@@ -102,11 +106,23 @@ export class Chat {
     this._authResult = authResult;
   }
 
-  public async subscribeSchedules(schedules: Schedule[], { lpuCode, departmentId, doctorId }: DoctorsQuery) {
+  public async subscribeSchedules(
+    schedules: Schedule[],
+    { lpuCode, departmentId, doctorId }: DoctorsQuery,
+    {
+      doctor,
+      lpu,
+    }: {
+      doctor?: Doctor;
+      lpu?: Lpu;
+    },
+  ) {
     return setSubscription(this, {
       id: getKey(lpuCode, departmentId, doctorId),
       schedules,
       query: { lpuCode, departmentId, doctorId },
+      doctor: doctor ? { ...doctor, schedule: [] } : undefined,
+      lpu,
     });
   }
 

@@ -2,7 +2,7 @@
 
 import { Chat, Schedule } from '../lib/chat';
 import { Doctor, DoctorsResult, Week1 } from '../types/Doctor';
-import { shortPersonId } from '../utils';
+import { shortId } from '../utils';
 import { sumBy } from 'lodash';
 import { format } from 'date-fns';
 
@@ -48,7 +48,7 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
 
   const doctors = foundDoctors.items
     .flatMap((item) => item.doctors)
-    .filter((doctor) => (doctorsQuery.doctorId ? doctor.person_id.startsWith(doctorsQuery.doctorId) : true));
+    .filter((doctor) => (doctorsQuery.doctorId ? doctor.id.endsWith(doctorsQuery.doctorId) : true));
 
   if (!doctors.length) {
     throw new Error(
@@ -58,14 +58,14 @@ export const getDoctorsWithSchedule = async (chat: Chat, doctorsQuery: DoctorsQu
     );
   }
 
-  return doctors;
+  const lpus = foundDoctors.items.map((item) => item.lpu);
+
+  return { doctors, lpus };
 };
 
 export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
   let schedules: Schedule[] = doctors.map((doctor) => {
-    // const workingDays = [...getWorkingDays(doctor.week1), ...getWorkingDays(doctor.week2)];
     const workingDays = getWorkingDays(doctor.schedule);
-    // console.log({ doctor })
     const days = workingDays.map((day) => ({
       count_tickets: day.count_tickets,
       date: day.date,
@@ -73,7 +73,7 @@ export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
     return {
       id: doctor.id,
       displayName: doctor.displayName,
-      person_id: doctor.person_id,
+      doctorId: doctor.id,
       count_tickets: sumBy(days, (day) => day.count_tickets),
       days,
     };
@@ -93,9 +93,8 @@ export const getSchedules = (doctors: Doctor[], onlyAvailable = false) => {
 
 export const getFollowMessages = (schedules: Schedule[]) =>
   schedules.map((schedule) => {
-    // console.log({ schedule })
     const message = [
-      `(_${shortPersonId(schedule.person_id)}_) ${schedule.displayName}`,
+      `🧑‍⚕️ ${schedule.displayName} (\`${shortId(schedule.doctorId)}\`)`,
       `Свободных мест: *${schedule.count_tickets}*`,
       `*Дни:*\n${schedule.days.map((x) => `_${format(new Date(x.date), 'dd.MM.yyyy')}_ (${x.count_tickets} талонов)`).join('\n')}`,
     ].join('\n');
