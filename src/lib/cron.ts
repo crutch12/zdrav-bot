@@ -56,7 +56,8 @@ export const run = async (bot: Telegraf) => {
               chat.userId,
               [
                 `🎉 ${subscription.doctor?.displayName} - новые места! Было ${sumBefore}, стало ${sumAfter}`,
-                `[Записаться](https://zdrav.mosreg.ru/)`,
+                `[Записаться через сайт](https://zdrav.mosreg.ru/)`,
+                `Или отправьте \`/v_${(subscription.query.lpuCode ?? '').padStart(7, '0')}\` боту @eregistratura\\_mo\\_bot и выберите врача и время`,
               ].join('\n'),
               {
                 ...Markup.inlineKeyboard([
