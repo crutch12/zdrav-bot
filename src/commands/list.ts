@@ -25,15 +25,15 @@ export const initialize = () => {
         'Список активных подписок:\n' +
           subscriptions
             .map(
-              (subscription) =>
-                `- 🧑‍⚕️ ${subscription.doctor?.displayName} (${subscription.doctor?.separation}) (\`${subscription.id}\`)`,
+              (subscription, idx) =>
+                `(${idx + 1}) 🧑‍⚕️ ${subscription.doctor?.displayName} (${subscription.doctor?.separation}) (\`${subscription.id}\`)`,
             )
             .join('\n'),
         {
           ...Markup.inlineKeyboard(
-            subscriptions.map((subscription) =>
+            subscriptions.map((subscription, idx) =>
               Markup.button.callback(
-                `🗑️ Удалить подписку ${subscription.id}`,
+                `🗑️ Удалить подписку (${idx + 1}) ${subscription.id}`,
                 `${unfollow.command} ${subscription.id}`,
               ),
             ),
